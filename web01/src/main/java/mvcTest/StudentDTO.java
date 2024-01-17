@@ -15,6 +15,7 @@ public class StudentDTO extends JoDTO {
 	private String info;
 	private double point;
 	private String cname; // 필요시 사용할 조장이름 추가선언 
+	// setCName() ..멤버 변수명의 2번째 알파벳도 대문자 사용 금지
 	
 	// ** 생성자 : 우클릭 > source > generate Construct Using field
 	// defalut 생성자 : 모든 값을 초기화하는 생성자가 필요하다

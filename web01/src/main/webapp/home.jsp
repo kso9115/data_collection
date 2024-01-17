@@ -49,7 +49,8 @@
 	<!-- 로그인 / 로그아웃 연동 -->
 	
 	<c:if test="${loginName!=null}">
-	&nbsp;<a href="/web01/logout">Logout</a><br>
+	&nbsp;<a href="/web01/myinfo">MyInfo</a><br>
+	&nbsp;<a href="/web01/logout">Logout</a>&nbsp;
 	</c:if>
 	<c:if test="${loginName==null}">
 	&nbsp;<a href="/web01/servletTestForm/flowEx04_LoginForm.jsp">LoginForm</a>&nbsp;

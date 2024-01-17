@@ -10,11 +10,11 @@ import javax.servlet.http.HttpServletResponse;
 import mvcTest.StudentDTO;
 import mvcTest.StudentService;
 
-@WebServlet("/login")
-public class Ex04_Login extends HttpServlet {
+@WebServlet("/loginT")
+public class Ex04_Login2_T extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-	public Ex04_Login() {
+	public Ex04_Login2_T() {
 		super();
 	}
 
@@ -23,9 +23,6 @@ public class Ex04_Login extends HttpServlet {
 		// 1. 요청 분석
 		// => 한굴,request의 Parameter 처리
 		request.setCharacterEncoding("UTF-8");
-//		String sno = request.getParameter("sno");
-//		String name = request.getParameter("name");
-//		String uri = "home.jsp";
 		
 		// 쌤 코드 요청 분석
 		// sno 예외 방지 처리 : 전달받은 파라미터의 sno값이 빈값 혹은 null일때 예외를 걸어줄 
@@ -46,23 +43,6 @@ public class Ex04_Login extends HttpServlet {
 		// sno 형변환해서 담아주기
 		StudentDTO dto = new StudentDTO();
 		dto = service.selectOne(sno);
-		
-//				System.out.println(service.selectList());
-//				System.out.println(service.selectOne(Integer.parseInt(sno)));
-
-		// 문자열 비교는 equal
-//		if ((dto.getSno()) == Integer.parseInt(sno) && (dto.getName()).equals(name)) {
-//			// index.html 로 이동 , redirect 사용
-//			response.sendRedirect(uri);
-//			System.out.println("로그인 성공");
-//		} else {
-//			// 재로그인
-//			uri = "servletTestForm/flowEx04_LoginForm.jsp";
-////			response.sendRedirect(uri);
-//			request.getRequestDispatcher(uri).forward(request, response);
-//			System.out.println("로그인 실패");
-//		}
-		
 		
 		// name 예외 방지 처리
 		// 쌤 코드
@@ -86,12 +66,9 @@ public class Ex04_Login extends HttpServlet {
 //				request.getRequestDispatcher(uri).forward(request, response);;
 		// forward 방식으로 진행 시
 		// http://localhost:8080/web01/servletTestForm/flowEx04_LoginForm.jsp/index.html
-		// 4.
 	}
-
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		doGet(request, response);
 	}
-
 } // class

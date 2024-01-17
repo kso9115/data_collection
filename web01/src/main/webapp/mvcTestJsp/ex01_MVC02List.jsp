@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>** MVC02_List_Java **</title>
+<title>** MVC02_List_Java_Scriptlet **</title>
 </head>
 <body>
 <%

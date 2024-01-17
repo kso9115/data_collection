@@ -45,12 +45,12 @@ public class Ex01_MVC02List extends HttpServlet {
 		// request.setAttribute(...)
 		request.setAttribute("myList", list);
 		// => 담은 객체를 Forward 방식으로 전달 : request객체에 담았기 때문에 forward 사용
-		request.getRequestDispatcher("mvcTestJsp/ex01_MVC02List.jsp").forward(request, response);
+		
+//		String uri="mvcTestJsp/ex01_MVC02List.jsp"; // version 01 자바코드 스크립트로 진행했을 때
+		String uri="mvcTestJsp/ex02_MVC02List.jsp"; // version 02 jstl로 진행했을 때
+		
+		request.getRequestDispatcher(uri).forward(request, response);
 
 	}
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		doGet(request, response);
-	}
 }
