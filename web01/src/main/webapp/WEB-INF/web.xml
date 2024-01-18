@@ -33,4 +33,24 @@ id="WebApp_ID" version="4.0">
    		<session-timeout>0</session-timeout>
    </session-config>
    
+   
+   <!-- Exception Test1 : 응답 상태 별 코드 -->
+   <error-page>
+   		<error-code>404</error-code>
+   		<location>/jsp04_Exception/ex02_404Page.jsp</location>
+   </error-page>
+   <error-page>
+   		<error-code>500</error-code>
+   		<location>/jsp04_Exception/ex02_500Page.jsp</location>
+   </error-page>
+   
+   Exception Test1 : Exception Type 별로 표현
+   <error-page>
+   		<exception-type>java.lang.NullPointerException</exception-type>
+   		<location>/jsp04_Exception/ex03_Null.jsp</location>
+   </error-page>
+   <error-page>
+   		<exception-type>java.lang.ArithmeticException</exception-type>
+   		<location>/jsp04_Exception/ex03_Arith.jsp</location>
+   </error-page>
 </web-app>
