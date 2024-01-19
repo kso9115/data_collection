@@ -49,7 +49,7 @@ public class C02_Login extends HttpServlet {
 		String uri = "home.jsp";
 		
 		if(dto!=null && pw.equals(dto.getPassword())) {
-			request.getSession().setAttribute("id", id);
+			request.getSession().setAttribute("loginId", id);
 			request.getSession().setAttribute("loginName", dto.getName());
 			response.sendRedirect(uri);
 			System.out.println("성공");

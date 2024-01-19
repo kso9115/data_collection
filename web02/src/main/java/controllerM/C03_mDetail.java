@@ -25,8 +25,9 @@ public class C03_mDetail extends HttpServlet {
 	    // => request 의 Parameter 처리
 		// => id, password 처리
 		
-		String id = (String)request.getSession().getAttribute("id");
+		String id = (String)request.getSession().getAttribute("loginId");	// 세션에 selectOne을 통해 가져온 loginId객체를 호출하여 불러줘야함
 		String uri = "member/memberDetail.jsp";
+		System.out.println(id);
 		
 		// jCode = "U" 사용하여 view 이동하기
 		// => Update 요청시에는 updateForm.jsp 로

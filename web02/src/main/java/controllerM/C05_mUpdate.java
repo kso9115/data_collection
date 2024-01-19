@@ -45,17 +45,6 @@ public class C05_mUpdate extends HttpServlet {
 		// 서비스 처리하러 가기전에 결과 출력을 위해 apple에 보관
 		request.setAttribute("apple", dto);
 
-		// 변수 담아서 작업
-//		String id = request.getParameter("id").trim();
-//		String pw = request.getParameter("password").trim();
-//		String name = request.getParameter("name").trim();
-//		String age = request.getParameter("age").trim();
-//		String jno = request.getParameter("jno").trim();
-//		String info = request.getParameter("info").trim();
-//		String point = request.getParameter("point").trim();
-//		String birthday = request.getParameter("birthday").trim();
-//		String rid = request.getParameter("rid").trim();
-		
 		
 		// 2. 서비스 처리
 		// => Service, DTO 객체 생성
