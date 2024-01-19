@@ -82,9 +82,10 @@ public class MemberDAO {
 
 	// 3) selectOne
 	public MemberDTO selectOne(String id) {
-		sql = "select * from member where sno = " + id;
+		sql = "select * from member where id = ?";
 		try {
 			pst = cn.prepareStatement(sql);
+			pst.setString(1, id);
 			rs = pst.executeQuery();
 
 			if (rs.next()) {
@@ -125,8 +126,9 @@ public class MemberDAO {
 			pst.setString(8, dto.getBirthday());
 			pst.setString(9, dto.getRid());
 
-			// int를 반환할 때 사용하는 메서드
+			System.out.println("성공");
 			return pst.executeUpdate();
+			// int를 반환할 때 사용하는 메서드
 		} catch (Exception e) {
 			System.out.println(" ** insertList Exception => " + e.toString());
 			return 0;

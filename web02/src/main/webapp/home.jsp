@@ -11,13 +11,13 @@
 <h2>** Web02_MVC02 **</h2>
 <h2>MVC2 패턴을 공부합쉬다</h2>
 
-<c:set value="${sessionScope.loginName}" var="loginName"></c:set>
+<c:set value="${sessionScope.id}" var="id"></c:set>
 
-<c:if test="${loginName!=null}">
-<h3>${sessionScope.loginName}님 안녕하세요</h3>
+<c:if test="${id!=null}">
+<h3>${id}님 안녕하세요</h3>
 </c:if>
 
-<c:if test="${loginName==null}">
+<c:if test="${id==null}">
 <span>로그인 후 이용하세요</span>
 </c:if>
 
@@ -26,11 +26,14 @@
 	<hr>
 	<!-- 로그인 / 로그아웃 연동 -->
 	
-<c:if test="${loginName!=null}">
-	&nbsp;<a href="/web02/mdetail">MyInfo</a><br>
+<c:if test="${id!=null}">
+	&nbsp;<a href="/web02/mdetail">MyInfo</a>&nbsp;
+	&nbsp;<a href="/web02/mdetail?jCode=U">내정보수정</a>&nbsp;
+	<!-- ?jCode=U view만 변경 시 -->
 	&nbsp;<a href="/web02/logout">Logout</a>&nbsp;
+	&nbsp;<a href="/web02/member/deleteForm.jsp">탈퇴</a>&nbsp;
 </c:if>
-<c:if test="${loginName==null}">
+<c:if test="${id==null}">
 	&nbsp;<a href="/web02/member/loginForm.jsp">Login</a>&nbsp;
 	&nbsp;<a href="/web02/member/joinForm.jsp">Join</a>&nbsp;
 </c:if>
