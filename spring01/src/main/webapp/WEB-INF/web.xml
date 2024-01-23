@@ -15,7 +15,13 @@
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
 	</listener>
 
-	<!-- Processes application requests -->
+	<!-- Processes application requests 
+			** DispatcherServlet : Spring이 제공하는 프론트컨트롤러
+			=> Object > Generic Servlet > HttpServlet
+			=> HttpServletBean -> FrameworkServlet -> DispatcherServlet	
+	-->
+			
+	<!-- 스프링 자체에서 제공해주는 dispatcher -->
 	<servlet>
 		<servlet-name>appServlet</servlet-name>
 		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>

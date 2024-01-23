@@ -21,7 +21,7 @@
 		<beans:property name="suffix" value=".jsp" />
 	</beans:bean>
 	
-	   <!-- * spring DispatcherServlet Test 1단계 **
+	<!-- * spring DispatcherServlet Test 1단계 **
       => xml 적용 ( 2단계 : @ 적용 )
       1. HandlerMapping Bean 등록      -->      
    <beans:bean class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
