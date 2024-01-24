@@ -5,9 +5,12 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
 
-	<!-- 생성해야하는 bean에 클래스명을 붙여줘야한다 컴포넌트 스캔해야하는 패키지를 선택 -->
-	<context:component-scan base-package="iocDI02_anno" />
-
-	<bean class="iocDI02_anno.Speaker" lazy-init="true"/>
-	<!-- <bean id="spa" class="iocDI02_anno.SpeakerA" lazy-init="true"/> -->
+<!-- LifeCycle_Test 1. xml 
+   => init-method, destroy-method 속성에 메서드지정 (메서드이름만 사용)  -->   
+	<!-- init메서드 : 자동호출 / 메소드명만 작성해주면된다 -->
+	<bean id="lc" class="iocDI04_LifeCycle.LifeCycle" lazy-init="true"
+				init-method="begin" destroy-method="end" 	 />
+				
+<!-- LifeCycle_Test 2. @ -->
+	<context:component-scan base-package="iocDI04_LifeCycle" />
 </beans>

@@ -5,9 +5,13 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
 
-	<!-- 생성해야하는 bean에 클래스명을 붙여줘야한다 컴포넌트 스캔해야하는 패키지를 선택 -->
-	<context:component-scan base-package="iocDI02_anno" />
+<!-- ** Test All
+	=> LifeCycleTest bean 설정,  
+	=> @ Annotation Scan base-package 등록 (@PostConstruct, @PreDestroy 안됨) 
+-->
+	<bean class="iocDI05_LCAll.LifeCycleTest" id="lc" lazy-init="true" 
+			init-method="begin" destroy-method="end"/>
+		
+	<context:component-scan base-package="iocDI05_LCAll" />		
 
-	<bean class="iocDI02_anno.Speaker" lazy-init="true"/>
-	<!-- <bean id="spa" class="iocDI02_anno.SpeakerA" lazy-init="true"/> -->
 </beans>
