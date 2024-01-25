@@ -51,7 +51,7 @@
 </table>
 <hr>
 
-&nbsp;<a href="/web02/home.jsp">HOME</a>&nbsp;
+&nbsp;<a href="home">HOME</a>&nbsp;
 &nbsp;<a href="">이전으로</a>&nbsp;
 </body>
 </html>
