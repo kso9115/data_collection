@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>** Spring02 MVC2 My Page **</title>
+<title>** Web MVC2 My Page **</title>
 
 
 </head>
@@ -25,37 +25,29 @@
 
 
 <body>
-<c:set var="m" value="${requestScope.mdetail}"></c:set>
+<c:set var="d" value="${requestScope.joDetail}"></c:set>
 <form action="detail" method="post">
 	
 	<table border="1" style="width: 100%">
-		<tr bgcolor="DarkCyan" style="color:white">
-			<th>ID</th>
-			<th>Password</th>
-			<th>Name</th>
-			<th>Age</th>
-			<th>Jno</th>
-			<th>Info</th>
-			<th>Point</th>
-			<th>Birthday</th>
-			<th>추천인</th>
+		<tr bgcolor="lightblue">
+			<th>조번호</th>
+			<th>조이름</th>
+			<th>조장</th>
+			<th>Project</th>
+			<th>Slogan</th>
 		</tr>
 		
-	<c:if test="${!empty m}">
+	<c:if test="${!empty d}">
 		<tr bgcolor="LightCyan">
-			<td>${m.id}</td>
-			<td>${m.password}</td>
-			<td>${m.name}</td>
-			<td>${m.age}</td>
-			<td>${m.jno}</td>
-			<td>${m.info}</td>
-			<td>${m.point}</td>
-			<td>${m.birthday}</td>
-			<td>${m.rid}</td>
+			<td>${d.jno}</td>
+			<td>${d.jname}</td>
+			<td>${d.captain}</td>
+			<td>${d.project}</td>
+			<td>${d.slogan}</td>
 		</tr>
 	</c:if>
 	
-	<c:if test="${empty m}">
+	<c:if test="${empty d}">
 		<tr><td colspan="2"><h3> 출력할 차료가 없습니다. </h3></td></tr>
 	</c:if>
 </table>
@@ -63,6 +55,7 @@
 
 &nbsp;<a href="/spring02/home">Home</a>&nbsp;
 &nbsp;<a href='javascript:history.go(-1)'>이전으로</a>&nbsp;
+&nbsp;<a href="joDetail?jo=1${d.jno}">수정하기</a>&nbsp;
 
 </body>
 </html>

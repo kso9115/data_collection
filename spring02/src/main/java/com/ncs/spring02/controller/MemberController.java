@@ -1,17 +1,15 @@
 package com.ncs.spring02.controller;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.mysql.cj.Session;
 import com.ncs.spring02.domain.MemberDTO;
 import com.ncs.spring02.service.MemberService;
 
@@ -22,7 +20,7 @@ import com.ncs.spring02.service.MemberService;
 //    -> DispatcherServlet이 해당 객체를 Controller객체로 인식하게 해줌. 
 //		-> interface Controller 의 구현의무가 사라진다.
 //		-> 이로인해 메서드 handleRequest() 오버라이딩에 대한 의무도 사라진다
-//		-> 즉, 메서드명, 리턴타입(ModelAndView or string or void), 전달받는 매개변수에 자유로워진다.
+//		-> 즉, 메서드명, 리턴타입(ModelAndView or string or void), 전달받는 매개변수에 따라 자유로워진다.
 //		-> 그렇다면 매핑을 해주어야하는데,클래스와 메서드 단위로 매핑해주는 애노테이션 @RequestMapping이 등장한다
 //		-> 결국 하나의 컨트롤러 클래스 안에 여러개의 매핑메서드 구현이 가능해진다.
 //		-> 그래서 주로 테이블(엔티티)을 작성한다 (MemberConroller.java에 작성)
@@ -56,6 +54,8 @@ public class MemberController {
 		return "member/memberDetail";
 	}
 
+//------------------------------------------------------------------------------------
+	
 	// 3. login
 	// login form을 출력하기 위한 메서드 사용법 2가지
 //	@RequestMapping(value = {"/loginForm"}, method = RequestMethod.GET)
@@ -118,6 +118,8 @@ public class MemberController {
 		return "redirect:/";
 	}
 	
+//------------------------------------------------------------------------------------
+
 	// 5. member Detail
 	// => 단일 parameter의 경우 @RequestParam("...") 활용
 	@RequestMapping(value = "/detail", method = RequestMethod.GET)
@@ -192,7 +194,7 @@ public class MemberController {
 
 	// 8. delete
 	@RequestMapping(value = {"/delete"}, method = RequestMethod.GET)
-	public String delete(HttpSession session, Model model, MemberDTO dto) {
+	public String delete(HttpSession session, Model model, MemberDTO dto, RedirectAttributes rttr) {
 		// 1. 요청 분석
 		// => id : session에서 get
 		// => delete & session 처리
@@ -201,12 +203,16 @@ public class MemberController {
 		
 		// 2. 서비스 처리 & 결과
 		if(service.delete(id)>0){
-			// 성공
-			model.addAttribute("message", " 아이디 삭제 성공 안녕히 가세요");
+			// 성공 : requestScope 의 message를 redirect 시에도 유지하기 위해서는
+			// 		 세션에 보관했다가 사용 후에는 무효화해주어야한다.
+			//		 session에 보관 후 redirect 되어진 요청 처리시에 requestScope에 옮기고,
+			//		 session의 message는 삭제
+			//		 => 이를 처리해주는 API : RedirectAttribute
+			rttr.addFlashAttribute("message", " 아이디 삭제 성공 안녕히 가세요");
 			session.invalidate();
 		} else {
 			// 실패
-			model.addAttribute("message", " 아이디 삭제 실패 어딜 가세요");
+			rttr.addFlashAttribute("message", " 아이디 삭제 실패 어딜 가세요");
 		}
 		
 		return uri;

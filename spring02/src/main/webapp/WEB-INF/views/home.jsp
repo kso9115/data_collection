@@ -10,16 +10,18 @@
 <body>
 <h1>Hello Spring !</h1>
 <hr>
-<h3>당신에게 제일 소중한 금, 바로 지금..^^</h3>
+<h3>Spring 02 MVC TEST</h3>
 <P> ${serverTime}. </P>
 <hr>
+
+<br>
 <c:if test="${!empty sessionScope.loginName}">
-<img alt="mainImage" src="/spring02/resources/images/JHBae.png" >
-	${sessionScope.loginName}님 안녕하세요<br>
+<img alt="mainImage" src="/spring02/resources/images/hihi22.jpg" >
+	<h3>${sessionScope.loginName}님 안녕하세요 ʕ´•ᴥ•`ʔก็็็็็็็็็็็็็ʕ•͡ᴥ•ʔ ก้้้้้้้้้้้</h3>
 </c:if>
 <c:if test="${empty sessionScope.loginID}">
-<img alt="mainImage" src="/spring02/resources/images/green01.png" width=300px height=300px><br>
-	<h3>로그인 후 이용해주갓어?</h3>
+<img alt="mainImage" src="/spring02/resources/images/hihi.jpg" width=500px height=380px>
+	<h2>로그인 후 이용해주갓어?</h2>
 </c:if>
 
 <c:if test="${!empty requestScope.message}">
@@ -43,5 +45,6 @@
 
 <!-- dispatcher로 -->
 &nbsp;<a href="member/memberList">MList</a>&nbsp;
+&nbsp;<a href="jo/joList">JList</a>&nbsp;
 </body>
 </html>
