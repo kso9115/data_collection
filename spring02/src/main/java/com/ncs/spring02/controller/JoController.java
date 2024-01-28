@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.ncs.spring02.domain.JoDTO;
 import com.ncs.spring02.domain.MemberDTO;
@@ -21,29 +22,34 @@ public class JoController {
 	JoService joservice;
 
 	// 1. joList
-	@RequestMapping(value = { "/joList" }, method = RequestMethod.GET)
-	public String joList(Model model) {
-
-		model.addAttribute("joList", joservice.selectJoList());
-		return "jo/joList";
-	}
+//	@RequestMapping(value = { "/joList" }, method = RequestMethod.GET)
+//	public String joList(Model model) {
+//
+//		model.addAttribute("joList", joservice.selectJoList());
+//		return "jo/joList";
+//	}
 
 	// 1-2. joList : void 선언 시
-//	@RequestMapping(value = { "/joList" }, method = RequestMethod.GET)
-//	public void joList(Model model) {
-//		model.addAttribute("joList", joservice.selectJoList());
-//	}
+	@RequestMapping(value = { "/joList" }, method = RequestMethod.GET)
+	public void joList(Model model) {
+		model.addAttribute("joList", joservice.selectJoList());
+	}
 
 	// 2. joDetail
 	@RequestMapping(value = { "/joDetail" }, method = RequestMethod.GET)
-	public String joDetail(Model model, @RequestParam("jo") int jno) {
+	public String joDetail(HttpSession session,Model model, @RequestParam("jo") int jno) {
 		
 		String uri = "jo/joDetail";
-		if(jno>10) {
+		if(jno>20) {
+			jno -= 20;
+			session.setAttribute("jno", jno);
+			uri = "jo/joDelete";
+		} else if(jno>10){
 			jno -= 10;
 			uri = "jo/joupdateForm";
 		}
 		// 쿼리스트링으로 넘겨받아야함
+		
 		model.addAttribute("joDetail", joservice.selectJoOne(jno));
 		return uri;
 	}
@@ -99,4 +105,33 @@ public class JoController {
 		}
 		return uri;
 	}
+	
+	// 5. joDelete
+	@RequestMapping(value = {"/delete"}, method = RequestMethod.GET)
+	public String delete(HttpSession session, Model model, JoDTO dto, RedirectAttributes rttr) {
+		// 1. 요청 분석
+		// => id : session에서 get
+		// => delete & session 처리
+		String uri = "redirect:/home";
+		int jno = (int)session.getAttribute("jno");
+		
+		System.out.println(jno);
+		// 2. 서비스 처리 & 결과
+		if(joservice.delete(jno)>0){
+			// 성공 : requestScope 의 message를 redirect 시에도 유지하기 위해서는
+			// 		 세션에 보관했다가 사용 후에는 무효화해주어야한다.
+			//		 session에 보관 후 redirect 되어진 요청 처리시에 requestScope에 옮기고,
+			//		 session의 message는 삭제
+			//		 => 이를 처리해주는 API : RedirectAttribute
+			session.getAttribute("joList");
+			rttr.addFlashAttribute("message", " 조 삭제 성공 안녕히 가세요");
+			session.invalidate();
+		} else {
+			// 실패
+			rttr.addFlashAttribute("message", " 조 삭제 실패 어딜 가세요");
+		}
+		return uri;
+	}//joDelete
+	
+	// 6. join해서 captain 이름까지 출력하기
 }

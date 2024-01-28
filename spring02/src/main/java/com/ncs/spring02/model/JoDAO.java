@@ -22,7 +22,7 @@ public class JoDAO {
 	private static String sql;
 	
 	// 1) joList : selectJoList
-	public List<JoDTO> selectJoList(){
+	public List<JoDTO> selectList(){
 		sql = "select * from jo";
 		List<JoDTO> list = new ArrayList<JoDTO>();
 		
@@ -55,7 +55,7 @@ public class JoDAO {
 	}
 	
 	// 2. joDetail
-	public JoDTO selectJoOne(int jno) {
+	public JoDTO selectOne(int jno) {
 		sql = "select * from jo where jno = ?";
 		try {
 			pst = cn.prepareStatement(sql);
@@ -80,7 +80,7 @@ public class JoDAO {
 	}
 	
 	// 3. joInsert
-	public int joInsert(JoDTO jdto) {
+	public int insert(JoDTO jdto) {
 		sql = "insert into jo values(?,?,?,?,?)";
 		try {
 			pst = cn.prepareStatement(sql);
@@ -100,7 +100,7 @@ public class JoDAO {
 	}
 	
 	// 4. joUpdate
-	public int joupdate(JoDTO jodto) {
+	public int update(JoDTO jodto) {
 		sql = "update jo set jno=?, jname=?, captain=?, project=?, slogan=? where jno = ?";
 		try {
 			pst = cn.prepareStatement(sql);
@@ -109,6 +109,7 @@ public class JoDAO {
 			pst.setString(3, jodto.getCaptain());
 			pst.setString(4, jodto.getProject());
 			pst.setString(5, jodto.getSlogan());
+			pst.setInt(6, jodto.getJno());
 
 			if(pst.executeUpdate() > 0) {
 				return pst.executeUpdate();
@@ -120,6 +121,21 @@ public class JoDAO {
 			System.out.println(" ** joUpdate Exception => " + e.toString());
 			return 0;
 		}
-	}
+	}// joUpdate
+	
+	// 6) delete
+		public int delete(int jno) {
+			sql = "delete from jo where jno=?";
+			try {
+				pst = cn.prepareStatement(sql);
+				pst.setInt(1, jno);
+				
+				return pst.executeUpdate();
+
+			} catch (Exception e) {
+				System.out.println(" ** JO deleteList Exception => " + e.toString());
+				return 0;
+			}
+		} // delete
 		
 }

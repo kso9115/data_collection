@@ -56,6 +56,7 @@
 &nbsp;<a href="/spring02/home">Home</a>&nbsp;
 &nbsp;<a href='javascript:history.go(-1)'>이전으로</a>&nbsp;
 &nbsp;<a href="joDetail?jo=1${d.jno}">수정하기</a>&nbsp;
+&nbsp;<a href="joDetail?jo=2${d.jno}">탈퇴하기</a>&nbsp;
 
 </body>
 </html>

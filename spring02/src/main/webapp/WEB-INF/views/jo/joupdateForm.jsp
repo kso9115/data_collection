@@ -46,7 +46,7 @@
 			<tr>
 
 				<td></td>
-				<td><input type="submit" value="수정완료" size="5">&nbsp;&nbsp;
+				<td><input type="submit" value="완료" size="5">&nbsp;&nbsp;
 					<input type="reset" value="취소" size="5"></td>
 			</tr>
 

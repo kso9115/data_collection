@@ -13,20 +13,21 @@ import com.ncs.spring02.model.JoDAO;
 public class JoService {
 	
 	@Autowired(required = false)
-	JoDAO jodao;
+	JoDAO dao;
 	
 	public List<JoDTO> selectJoList(){
-		return jodao.selectJoList();
+		return dao.selectList();
 	}
-	
 	public JoDTO selectJoOne(int jno) {
-		return jodao.selectJoOne(jno);
+		return dao.selectOne(jno);
 	}
-	
 	public int joInsert(JoDTO jdto) {
-		return jodao.joInsert(jdto);
+		return dao.insert(jdto);
 	}
 	public int joUpdate(JoDTO jdto) {
-		return jodao.joupdate(jdto);
+		return dao.update(jdto);
+	}
+	public int delete(int jno) {
+		return dao.delete(jno);
 	}
 }
