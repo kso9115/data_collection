@@ -84,6 +84,56 @@ public class MemberDAO {
 		}
 	}
 
+	// 3) selectJoList
+	// DBStart에서는 메인에서 호출하여 바로 사용하기 위해 메서드를 static으로 선언하였으나
+	// arraylist 타입을 사용하면되므로 조상인 List를 선언
+	public List<MemberDTO> selectJoList(int jno) {
+		sql = "select * from member where jno = ?";
+		
+		// 조상 인터페이스 = 자손
+		// arrayList로 하지 않은 이유 : 코드의 유지보수를 위해서
+		// 우측의 ArrayList를 LinkedList로 변경이 용이하다
+		List<MemberDTO> list = new ArrayList<MemberDTO>();
+		
+		try {
+			pst = cn.prepareStatement(sql);
+			pst.setInt(1, jno);
+			rs = pst.executeQuery();
+			// => 결과의 출력 여부
+			if (rs.next()) {
+				do {
+					// setter
+					MemberDTO dto = new MemberDTO();
+					dto.setId(rs.getString(1));
+					dto.setPassword(rs.getString(2));
+					dto.setName(rs.getString(3));
+					dto.setAge(rs.getInt(4));
+					dto.setJno(rs.getInt(5));
+					dto.setInfo(rs.getString(6));
+					dto.setPoint(rs.getDouble(7));
+					dto.setBirthday(rs.getString(8));
+					dto.setRid(rs.getString(9));
+					
+					
+					// 2. 객체 생성과 동시에 생성자를 통해 데이터를 기입해주기
+//					MemberDTO dto = new MemberDTO(rs.getString(1), rs.getString(2), rs.getInt(3), rs.getInt(4),
+//							rs.getInt(5), rs.getString(6), rs.getDouble(7), rs.getString(8), rs.getString(9));
+					
+					// 리스트에 dto를 넣어줘야함 > 값 초기화
+					list.add(dto);
+					
+				} while (rs.next());
+				return list;
+			} else {
+				return null;
+			}
+		} catch (Exception e) {
+			// 에러가 발생했을 때에도 값이 존재하지 않으니까 null 반환해줘야한다.
+			System.out.println("** selectList Exception => " + e.toString());
+			return null;
+		}
+	}
+
 	// 3) selectOne
 	public MemberDTO selectOne(String id) {
 		sql = "select * from member where id = ?";

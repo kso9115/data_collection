@@ -4,6 +4,7 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -12,14 +13,22 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.ncs.spring02.domain.JoDTO;
 import com.ncs.spring02.domain.MemberDTO;
+import com.ncs.spring02.model.MemberDAO;
 import com.ncs.spring02.service.JoService;
+import com.ncs.spring02.service.MemberService;
+
+import lombok.AllArgsConstructor;
 
 @Controller
 @RequestMapping(value = "/jo")
+@AllArgsConstructor	// 모든 멤버변수를 초기화하는 생성자
 public class JoController {
 
-	@Autowired(required = false)
+//	@Autowired(required = false)
 	JoService joservice;
+//	@Autowired(required = false)	// 조 선택 시 멤버 출력을 위해
+	MemberService service;
+	
 
 	// 1. joList
 //	@RequestMapping(value = { "/joList" }, method = RequestMethod.GET)
@@ -32,7 +41,7 @@ public class JoController {
 	// 1-2. joList : void 선언 시
 	@RequestMapping(value = { "/joList" }, method = RequestMethod.GET)
 	public void joList(Model model) {
-		model.addAttribute("joList", joservice.selectJoList());
+		model.addAttribute("joList", joservice.selectList());
 	}
 
 	// 2. joDetail
@@ -40,16 +49,19 @@ public class JoController {
 	public String joDetail(HttpSession session,Model model, @RequestParam("jo") int jno) {
 		
 		String uri = "jo/joDetail";
+		session.setAttribute("jno", jno);
+
 		if(jno>20) {
 			jno -= 20;
-			session.setAttribute("jno", jno);
 			uri = "jo/joDelete";
 		} else if(jno>10){
 			jno -= 10;
 			uri = "jo/joupdateForm";
-		}
-		// 쿼리스트링으로 넘겨받아야함
+		} // 쿼리스트링으로 넘겨받아야함
 		
+		// 조별 멤버 리스트 출력을 위해 memberservice 호출하여 데이터를 jolist 객체에 담아 jsp에 전달
+		model.addAttribute("jolist", service.selectJoList(jno));
+		// 조별 상세정보 출력을 위해 객체에 담아준 후 jsp에 전달
 		model.addAttribute("joDetail", joservice.selectJoOne(jno));
 		return uri;
 	}
@@ -61,7 +73,7 @@ public class JoController {
 	
 	// 3-2. joInsert 처리하기
 	@RequestMapping(value = {"/join"}, method = RequestMethod.POST)
-	public String joinsert(Model model, JoDTO jdto) {
+	public String joinsert(Model model, JoDTO jdto, RedirectAttributes rttr) {
 		// 1. 요청 분석
 		// => 이전 : 한글처리, request 값을 dto에 set하여 진행했으나,
 		// => 현재 : 한글은 filter / request처리는 parameter(매개변수)로 자동 처리
@@ -71,11 +83,11 @@ public class JoController {
 		// 2. 서비스 처리 & 결과
 		if(joservice.joInsert(jdto)>0) {
 			//성공
-			model.addAttribute("message", " 조 추가등록 성공ㅋㅋ ");
+			rttr.addFlashAttribute("message", " 조 추가등록 성공ㅋㅋ ");
 		} else {
 			//실패 : 재가입 유도
 			uri = "jo/joinForm";
-			model.addAttribute("message", " 조 추가 등록 실패;; ");
+			rttr.addFlashAttribute("message", " 조 추가 등록 실패;; ");
 		}
 		return uri;
 	}

@@ -14,18 +14,18 @@ import com.ncs.spring02.domain.MemberDTO;
 
 @Repository
 public class JoDAO {
-	
+
 	private static Connection cn = DBConnection.getConnection(); // 기본적으로 checked이기때문에 try~catch 예외처리 필수
 	private static Statement st;
 	private static PreparedStatement pst;
 	private static ResultSet rs;
 	private static String sql;
-	
-	// 1) joList : selectJoList
-	public List<JoDTO> selectList(){
+
+	// 1) joList : selectList
+	public List<JoDTO> selectList() {
 		sql = "select * from jo";
 		List<JoDTO> list = new ArrayList<JoDTO>();
-		
+
 		try {
 			pst = cn.prepareStatement(sql);
 			rs = pst.executeQuery();
@@ -53,7 +53,8 @@ public class JoDAO {
 			return null;
 		}
 	}
-	
+
+
 	// 2. joDetail
 	public JoDTO selectOne(int jno) {
 		sql = "select * from jo where jno = ?";
@@ -78,7 +79,7 @@ public class JoDAO {
 			return null;
 		}
 	}
-	
+
 	// 3. joInsert
 	public int insert(JoDTO jdto) {
 		sql = "insert into jo values(?,?,?,?,?)";
@@ -98,7 +99,7 @@ public class JoDAO {
 			return 0;
 		}
 	}
-	
+
 	// 4. joUpdate
 	public int update(JoDTO jodto) {
 		sql = "update jo set jno=?, jname=?, captain=?, project=?, slogan=? where jno = ?";
@@ -111,7 +112,7 @@ public class JoDAO {
 			pst.setString(5, jodto.getSlogan());
 			pst.setInt(6, jodto.getJno());
 
-			if(pst.executeUpdate() > 0) {
+			if (pst.executeUpdate() > 0) {
 				return pst.executeUpdate();
 			} else {
 				System.out.println("** 조 데이터 업데이트 실패 **");
@@ -122,20 +123,20 @@ public class JoDAO {
 			return 0;
 		}
 	}// joUpdate
-	
-	// 6) delete
-		public int delete(int jno) {
-			sql = "delete from jo where jno=?";
-			try {
-				pst = cn.prepareStatement(sql);
-				pst.setInt(1, jno);
-				
-				return pst.executeUpdate();
 
-			} catch (Exception e) {
-				System.out.println(" ** JO deleteList Exception => " + e.toString());
-				return 0;
-			}
-		} // delete
-		
+	// 6) delete
+	public int delete(int jno) {
+		sql = "delete from jo where jno=?";
+		try {
+			pst = cn.prepareStatement(sql);
+			pst.setInt(1, jno);
+
+			return pst.executeUpdate();
+
+		} catch (Exception e) {
+			System.out.println(" ** JO deleteList Exception => " + e.toString());
+			return 0;
+		}
+	} // delete
+
 }

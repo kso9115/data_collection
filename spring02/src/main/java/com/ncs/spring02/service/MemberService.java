@@ -17,27 +17,32 @@ public class MemberService {
 	@Autowired(required = false)
 	MemberDAO dao;
 //	MemberDAO dao = new MemberDAO();
-	
+
 	// selectList
 	public List<MemberDTO> selectList() {
 		return dao.selectList();
 	}
-	
+
+	// 리스트 멤버 출력을 위한 서비스추가
+	public List<MemberDTO> selectJoList(int jno) {
+		return dao.selectJoList(jno);
+	}
+
 	// selectOne
 	public MemberDTO selectOne(String id) {
 		return dao.selectOne(id);
 	}
-	
+
 	// insert
 	public int insert(MemberDTO dto) {
 		return dao.insert(dto);
 	}
-	
+
 	// update
 	public int update(MemberDTO dto) {
 		return dao.update(dto);
 	}
-	
+
 	// delete
 	public int delete(String id) {
 		return dao.delete(id);

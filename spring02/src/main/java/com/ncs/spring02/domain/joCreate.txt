@@ -3,4 +3,12 @@ Jo 관리 시스템 만들기
 1. CRUD 구현
 2. Java : JoDTO , JoDAO, JoService, JoController
 3. Jsp : joList.jsp. joDetail.jsp, joInsert.jsp, joUpdate.jsp
-4. home : 메뉴
+4. home : 메뉴추가 <a href="jo/joList">JList</a>
+5. joList 에서 jno를 클릭하면 joDetail 출력
+
+** 기능 추가
+=> joDetail 에 조원 목록 추가하기
+	-> JoController
+		- 조원 목록 읽어오기
+		- MemberDAO, Service에 selectJoList 추가
+	-> joDetail.jsp에 출력구문까지 추가.

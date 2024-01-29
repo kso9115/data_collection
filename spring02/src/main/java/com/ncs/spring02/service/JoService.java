@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.ncs.spring02.domain.JoDTO;
 import com.ncs.spring02.domain.MemberDTO;
 import com.ncs.spring02.model.JoDAO;
+import com.ncs.spring02.model.MemberDAO;
 
 @Service
 public class JoService {
@@ -15,7 +16,7 @@ public class JoService {
 	@Autowired(required = false)
 	JoDAO dao;
 	
-	public List<JoDTO> selectJoList(){
+	public List<JoDTO> selectList(){
 		return dao.selectList();
 	}
 	public JoDTO selectJoOne(int jno) {

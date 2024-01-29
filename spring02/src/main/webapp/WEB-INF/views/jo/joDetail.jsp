@@ -10,17 +10,17 @@
 
 </head>
 
-<style>
-	tbody{
+<!-- <style>
+	tbody:first-child{
 	display : flex;
 	width : 
 	}
 	
-	tr{
+	tr:first-child{
 	display : flex;
 	flex-direction: column;
 	}
-</style>
+</style> -->
 <link rel="stylesheet" type="text/css" href="/spring02/resources/myLib/myStyle.css">
 
 
@@ -46,11 +46,42 @@
 			<td>${d.slogan}</td>
 		</tr>
 	</c:if>
-	
 	<c:if test="${empty d}">
 		<tr><td colspan="2"><h3> 출력할 차료가 없습니다. </h3></td></tr>
 	</c:if>
+	
+	<hr>
+	
 </table>
+	
+	<table border="1" style="width: 100%">
+		<tr bgcolor="DarkCyan" style="color:white">
+			<th>ID</th>
+			<th>Password</th>
+			<th>Name</th>
+			<th>Age</th>
+			<th>Jno</th>
+			<th>Info</th>
+			<th>Point</th>
+			<th>Birthday</th>
+			<th>추천인</th>
+		</tr>
+		
+	<c:if test="${!empty requestScope.jolist}">
+		<c:forEach var="l" items="${requestScope.jolist}">
+		<tr bgcolor="LightCyan">
+			<td>${l.id}</td>
+			<td>${l.password}</td>
+			<td>${l.name}</td>
+			<td>${l.age}</td>
+			<td>${l.jno}</td>
+			<td>${l.info}</td>
+			<td>${l.point}</td>
+			<td>${l.birthday}</td>
+			<td>${l.rid}</td>
+		</c:forEach>
+		</tr>
+	</c:if>
 </form>
 
 &nbsp;<a href="/spring02/home">Home</a>&nbsp;
