@@ -10,17 +10,37 @@
 
 </head>
 
-<!-- <style>
-	tbody:first-child{
-	display : flex;
-	width : 
-	}
-	
-	tr:first-child{
-	display : flex;
-	flex-direction: column;
-	}
-</style> -->
+<style>
+table {
+  border-collapse: collapse;
+  width: 500px;
+  margin: 1rem auto;
+  border: 1px solid #ddd;
+  background-color: white;
+}
+th, td {
+  padding: 8px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+  text-align: center;
+}
+th {
+  background-color: #1b1b1b;
+  color: #ddd;
+}
+tbody tr:hover {
+  background-color: #d3d3d3;
+  opacity: 0.9;
+  cursor: pointer;
+}
+a {
+  color: inherit;
+  text-decoration: none;
+}
+a:hover {
+  color: red;
+}
+</style>
 <link rel="stylesheet" type="text/css" href="/spring02/resources/myLib/myStyle.css">
 
 
@@ -35,22 +55,24 @@
 	<hr>
 	
 <table border="1" style="width: 100%">
-		<tr bgcolor="DarkCyan" style="color:white">
+		<tr style="color:white">
 			<th>Seq</th>
 			<th>Title</th>
+			<th>Content</th>
 			<th>I D</th>
 			<th>RegDate</th>
 			<th>조회수</th>
 		</tr>
 		
 	<c:if test="${!empty d}">
-			<tr bgcolor="LightCyan">
-				<td>${d.seq}</td>
-				<td>${d.title}</td>
-				<td>${d.id}</td>
-				<td>${d.regdate}</td>
-				<td>${d.cnt}</td>
-			</tr>
+		<tr>
+			<td>${d.seq}</td>
+			<td>${d.title}</td>
+			<td>${d.content}</td>
+			<td>${d.id}</td>
+			<td>${d.regdate}</td>
+			<td>${d.cnt}</td>
+		</tr>
 	</c:if>
 </table>
 </form>

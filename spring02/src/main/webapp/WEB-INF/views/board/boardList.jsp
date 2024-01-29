@@ -7,9 +7,39 @@
 <meta charset="UTF-8">
 <title>** Spring MVC2 Board List **</title>
 </head>
-<link rel="stylesheet" type="text/css"
-	href="/spring02/resources/myLib/myStyle.css">
-
+<!-- <link rel="stylesheet" type="text/css"
+	href="/spring02/resources/myLib/myStyle.css"> -->
+<style>
+table {
+  border-collapse: collapse;
+  width: 500px;
+  margin: 1rem auto;
+  border: 1px solid #ddd;
+  background-color: white;
+}
+th, td {
+  padding: 8px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+  text-align: center;
+}
+th {
+  background-color: #1b1b1b;
+  color: #ddd;
+}
+tbody tr:hover {
+  background-color: #d3d3d3;
+  opacity: 0.9;
+  cursor: pointer;
+}
+a {
+  color: inherit;
+  text-decoration: none;
+}
+a:hover {
+  color: red;
+}
+</style>
 <body>
 	<h3>** Spring MVC2 Board List **</h3>
 
@@ -18,9 +48,9 @@
 	</c:if>
 	<hr>
 
-	<table border="1" style="width: 100%">
+	<table style="width: 100%">
 
-		<tr bgcolor="lavender">
+		<tr>
 			<th>Seq</th>
 			<th>Title</th>
 			<th>I D</th>
@@ -29,7 +59,7 @@
 		</tr>
 <c:if test="${!empty requestScope.blist}">
 	<c:forEach var="b" items="${requestScope.blist}">
-		<tr bgcolor="Lavender">
+		<tr>
 			<td>${b.seq}</td>
 			<td>
 			<c:if test="${!empty loginID}">
@@ -54,8 +84,12 @@
 </c:if>
 	</table>
 
-	&nbsp;
-	<a href="/spring02/home">Home</a>&nbsp; &nbsp;
-	<a href='javascript:history.go(-1)'>이전으로</a>&nbsp;
+
+&nbsp;<a href="/spring02/home">Home</a>&nbsp;
+&nbsp;<a href='javascript:history.go(-1)'>이전으로</a>&nbsp;
+
+<c:if test="${!empty sessionScope.loginID}">
+&nbsp;<a href="boardInsert">글 작성하기</a>&nbsp;
+</c:if>
 </body>
 </html>

@@ -6,7 +6,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.mysql.cj.Session;
+import com.mysql.cj.protocol.x.SyncFlushDeflaterOutputStream;
 import com.ncs.spring02.domain.BoardDTO;
 import com.ncs.spring02.service.BoardService;
 
@@ -38,7 +41,26 @@ public class BoardController {
 		return uri;
 	}//boardDetail
 	
-	// 3. Board Update
+	// 3-1. Board insert form으로 이동
+	@GetMapping("/boardInsert")
+	public void boardInsert() {
+	}
+	
+	// 3-2. Board insert
+	@PostMapping("/insert")
+	public String boardinsert(RedirectAttributes rttr, Model model,BoardDTO dto) {
+		String uri = "redirect:boardList";
+		
+		if(service.insert(dto)>0) {
+			rttr.addFlashAttribute("message"," 글 추가 완료~!");
+		} else {
+			uri = "board/boardInsert";
+			rttr.addFlashAttribute("message"," 글 추가 실패~!");
+		}
+		return uri;
+	}
+	
+	// 4. Board Update
 	@PostMapping("/update")
 	public String boardUpdate(Model model,BoardDTO dto,@RequestParam("seq") int seq) {
 		String uri = "board/boardDetail";	// 성공 시
@@ -52,4 +74,6 @@ public class BoardController {
 		}
 		return uri;
 	}
+	
+	// 5. Board delete
 }

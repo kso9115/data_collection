@@ -94,7 +94,24 @@ public class BoardDAO {
 
 	// 3. insert
 	public int insert(BoardDTO dto) {
-		return 0;
+		sql = "insert into board values(\r\n"
+				+ "(select * from (select ifNull(max(seq),0)+1 from board) as temp),\r\n"
+				+ "?, ?, ?, CURRENT_TIMESTAMP ,0,\r\n"
+				+ "(select * from (select ifNull(max(seq),0)+1 from board) as temp), 0, 0)";
+
+		try {
+			pst = cn.prepareStatement(sql);
+			pst.setString(1, dto.getId());
+			pst.setString(2, dto.getTitle());
+			pst.setString(3, dto.getContent());
+			
+			System.out.println(pst);
+			return pst.executeUpdate();
+			
+		} catch (Exception e) {
+			System.out.println(" ** Board Update Exception => " + e.toString());
+			return 0;
+		}
 	}
 
 	// 4. update

@@ -5,8 +5,10 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>** Board Update Form **</title>
+<title>** Board Insert Form **</title>
 </head>
+<link rel="stylesheet" type="text/css"
+	href="/spring02/resources/myLib/myStyle.css">
 <style>
 textarea {
 	padding: 10px;
@@ -40,47 +42,28 @@ textarea {
 }
 </style>
 <body>
-
-	<h2>** Spring02 MVC2 Board Update Page **</h2>
+	<h2>** Spring02 MVC2 Board Insert Page **</h2>
 	<hr>
-
-	<form action="update" method="post">
+	${requestScope.loginID}
+	<form action="insert" method="post">
 		<table>
-
-			<tr height="40">
-				<td><label for="seq">글번호</label></td>
-				<td><input type="text" id="seq" name="seq" size="18"
-					value="${requestScope.seqContent.seq}" readonly></td>
-			</tr>
 			<tr height="40">
 				<td><label for="title">Title</label></td>
-				<td><input type="text" id="title" name="title" size="18"
-					value="${requestScope.seqContent.title}"></td>
+				<td><input type="text" id="title" name="title" size="18">
 			</tr>
 			<tr height="40">
 				<td><label for="content">글내용</label></td>
-				<td>
-					<textarea id="content" name="content" rows="6" cols="33">
-					${requestScope.seqContent.content}</textarea>
+				<td><textarea rows="10" cols="50" placeholder="작성하세요"></textarea>
+				<!-- 아이디값이 있으면..텍스트 창 자체가 안뜨고..아이디값이 없으면..
+					데이터가 다 null로 넘어가고 난리 ㅠㅠ -->
 				</td>
 			</tr>
 			<tr height="40">
-				<td><label for="id">ID</label></td>
-				<td><input type="text" id="id" name="id" size="18" readonly
-					value="${requestScope.seqContent.id}"></td>
-			</tr>
-			<tr height="40">
-				<td><label for="regdate">작성시간(수정불가)</label></td>
-				<td><input type="datetime" id="regdate" name="regdate" size="18"
-					value="${requestScope.seqContent.regdate}" readonly></td>
-			</tr>
-			<tr height="40">
-				<td><label for="cnt">조회수</label></td>
-				<td><input type="text" id="cnt" name="cnt" size="18"
-					value="${requestScope.seqContent.cnt}"></td>
+				<td><label for="id">작성자 ID</label></td>
+				<td><input type="text" id="id" name="id"
+					value="${sessionScope.loginID}" size="18" readonly></td>
 			</tr>
 			<tr>
-
 				<td></td>
 				<td><input type="submit" value="완료" size="5">&nbsp;&nbsp;
 					<input type="reset" value="취소" size="5"></td>
@@ -88,6 +71,7 @@ textarea {
 
 		</table>
 	</form>
+	&nbsp;
 	<c:if test="${!empty requestScope.message}">
 ${requestScope.message}<br>
 	</c:if>
@@ -96,6 +80,7 @@ ${requestScope.message}<br>
 	&nbsp;
 	<a href="/spring02/home">Home</a>&nbsp; &nbsp;
 	<a href='javascript:history.go(-1)'>이전으로</a>&nbsp;
+
 
 </body>
 </html>
