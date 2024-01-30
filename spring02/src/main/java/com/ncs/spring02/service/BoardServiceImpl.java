@@ -28,7 +28,7 @@ public class BoardServiceImpl implements BoardService {
 	public int insert(BoardDTO dto) {
 		return dao.insert(dto);
 	}
-
+	
 	@Override
 	public int update(BoardDTO dto) {
 		return dao.update(dto);
@@ -39,4 +39,8 @@ public class BoardServiceImpl implements BoardService {
 		return dao.delete(seq);
 	}
 
+	@Override
+	public int rinsert(BoardDTO dto) {
+		return dao.rinsert(dto);
+	}
 }

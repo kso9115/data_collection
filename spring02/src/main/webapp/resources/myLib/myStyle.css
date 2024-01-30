@@ -33,7 +33,7 @@ a:active { color:Blue; }
 => .content : span , #content : div
 => div 초기값 : 화면표시X, 좌표기준, 글내용은 무조건 표시 
 */
-.content { color: Teal; background: AliceBlue; }
+/* .content { color: Teal; background: AliceBlue; }
 #content {
 	display:none;
 	position:absolute;
@@ -42,7 +42,7 @@ a:active { color:Blue; }
 	height:70px; 
 	color: SaddleBrown;
 	background: Beige;
-}
+} */
 /*  Check  List searchBar */
 #searchBar {
 	color:DimGray ; font-family:돋움; font-size:14px;

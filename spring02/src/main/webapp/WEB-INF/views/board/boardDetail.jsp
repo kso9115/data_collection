@@ -43,9 +43,10 @@ a:hover {
 </style>
 <link rel="stylesheet" type="text/css" href="/spring02/resources/myLib/myStyle.css">
 
-
 <body>
 <c:set var="d" value="${requestScope.seqContent}"></c:set>
+
+
 <form action="detail" method="post">
 	
 	<c:if test="${empty d}">
@@ -80,6 +81,15 @@ a:hover {
 &nbsp;<a href="/spring02/home">Home</a>&nbsp;
 <c:if test="${d.id==sessionScope.loginID}">
 &nbsp;<a href="detail?jCode=U&seq=${d.seq}">수정하기</a>&nbsp;
+&nbsp;<a href="detail?jCode=X&seq=${d.seq}">삭제하기</a>&nbsp;
+</c:if>
+<!-- 로그인 시 답글등록 -->
+<c:if test="${!empty sessionScope.loginID}">
+<!-- &nbsp;<a href="boardInsert">새글달기</a>&nbsp; -->
+<!-- 댓글등록을 위해 부모글의 root, step, indent 값이 필요하기 때문에
+    서버로 보내주어야함 (퀴리스트링으로 작성)    -->
+&nbsp;<a href="replyInsert?root=${seqContent.root}&step=${seqContent.step}
+				&indent=${seqContent.indent}">답글달기</a>&nbsp;
 </c:if>
 &nbsp;<a href='javascript:history.go(-1)'>이전으로</a>&nbsp;
 

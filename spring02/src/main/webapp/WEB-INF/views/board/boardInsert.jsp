@@ -7,8 +7,8 @@
 <meta charset="UTF-8">
 <title>** Board Insert Form **</title>
 </head>
-<link rel="stylesheet" type="text/css"
-	href="/spring02/resources/myLib/myStyle.css">
+<!-- <link rel="stylesheet" type="text/css"
+	href="/spring02/resources/myLib/myStyle.css"> -->
 <style>
 textarea {
 	padding: 10px;
@@ -40,6 +40,14 @@ textarea {
 	padding-left: 10px;
 	background-color: rgb(233, 233, 233);
 }
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+a:hover {
+  color: red;
+}
 </style>
 <body>
 	<h2>** Spring02 MVC2 Board Insert Page **</h2>
@@ -52,11 +60,10 @@ textarea {
 				<td><input type="text" id="title" name="title" size="18">
 			</tr>
 			<tr height="40">
-				<td><label for="content">글내용</label></td>
-				<td><textarea rows="10" cols="50" placeholder="작성하세요"></textarea>
+				<td><span>글내용</span></td>
+				<td><textarea id="content" name="content" rows="10" cols="50" placeholder="작성하세요"></textarea></td>
 				<!-- 아이디값이 있으면..텍스트 창 자체가 안뜨고..아이디값이 없으면..
 					데이터가 다 null로 넘어가고 난리 ㅠㅠ -->
-				</td>
 			</tr>
 			<tr height="40">
 				<td><label for="id">작성자 ID</label></td>

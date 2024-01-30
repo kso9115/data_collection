@@ -62,6 +62,15 @@ a:hover {
 		<tr>
 			<td>${b.seq}</td>
 			<td>
+			<!-- 답글 등록한 후 Title 출력전에 들여쓰기를 추가하기
+				1부터 시작하여, indent(level)까지  -->
+			<c:if test="${b.indent>0}">
+				<c:forEach begin="1" end="${b.indent}">
+					<span>&nbsp;&nbsp;</span>
+				</c:forEach>
+				<span style="color:red">ㄴre</span>
+			</c:if>
+			
 			<c:if test="${!empty loginID}">
 				<a href="detail?jCode=D&seq=${b.seq}">${b.title}</a>			
 			</c:if>

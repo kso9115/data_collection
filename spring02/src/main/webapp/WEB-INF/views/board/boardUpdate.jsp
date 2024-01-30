@@ -60,8 +60,8 @@ textarea {
 			<tr height="40">
 				<td><label for="content">글내용</label></td>
 				<td>
-					<textarea id="content" name="content" rows="6" cols="33">
-					${requestScope.seqContent.content}</textarea>
+					<textarea id="content" name="content" rows="6" cols="33"
+					>${requestScope.seqContent.content}</textarea>
 				</td>
 			</tr>
 			<tr height="40">
@@ -77,7 +77,7 @@ textarea {
 			<tr height="40">
 				<td><label for="cnt">조회수</label></td>
 				<td><input type="text" id="cnt" name="cnt" size="18"
-					value="${requestScope.seqContent.cnt}"></td>
+					value="${requestScope.seqContent.cnt}" readonly></td>
 			</tr>
 			<tr>
 

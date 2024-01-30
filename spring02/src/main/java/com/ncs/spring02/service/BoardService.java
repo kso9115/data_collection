@@ -12,6 +12,8 @@ public interface BoardService {
 		public BoardDTO selectOne(int seq);
 		// 3. insert
 		public int insert(BoardDTO dto);
+		// 3-1. replyInsert
+		public int rinsert(BoardDTO dto);
 		// 4. update
 		public int update(BoardDTO dto);
 		// 5. delete
