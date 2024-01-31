@@ -198,13 +198,22 @@ public class BoardDAO {
 		}
 	}// Update
 
-	// 5. delete
-	public int delete(int seq) {
-		sql = "delete from board where seq=?";
+	// 5. delete => 원글에 대한 삭제인지, 답글에 대한 삭제인지를 판별한 후 삭제해주어야함다.
+	// => 답글 추가 후 : 원글과 답글의 구분이 필요하다.
+	//	-> 원글 삭제 : where root=? (root가 동일할 때 삭제)
+	//	-> 답글 삭제 : where seq=? (해당하는 답글만 삭제)
+	public int delete(BoardDTO dto) {
+		if(dto.getSeq()==dto.getRoot()) {	// 원글일 때
+			// 원글이므로, root = seq이니까 pst.setInt(1,seq) 처리가능
+			sql = " delete from board where root=? ";
+			
+		} else { // 답글일 때 삭제
+			sql = " delete from board where seq=? ";
+		}
 		
 		try {
 			pst = cn.prepareStatement(sql);
-			pst.setInt(1, seq);
+			pst.setInt(1,dto.getSeq());
 			
 			return pst.executeUpdate();
 		} catch (Exception e) {

@@ -81,7 +81,7 @@ a:hover {
 &nbsp;<a href="/spring02/home">Home</a>&nbsp;
 <c:if test="${d.id==sessionScope.loginID}">
 &nbsp;<a href="detail?jCode=U&seq=${d.seq}">수정하기</a>&nbsp;
-&nbsp;<a href="detail?jCode=X&seq=${d.seq}">삭제하기</a>&nbsp;
+&nbsp;<a href="detail?jCode=X&seq=${d.seq}&root=${d.root}">삭제하기</a>&nbsp;
 </c:if>
 <!-- 로그인 시 답글등록 -->
 <c:if test="${!empty sessionScope.loginID}">

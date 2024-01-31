@@ -93,11 +93,13 @@ public class BoardController {
 	
 	// 5. Board delete
 	@PostMapping("/delete")
-	public String boardDelete(HttpSession session,Model model, @RequestParam("seq") int seq, RedirectAttributes rttr) {
+	public String boardDelete(HttpSession session,BoardDTO dto,Model model, 
+			@RequestParam("seq") int seq,
+			RedirectAttributes rttr) {
 		String uri = "redirect:boardList";
 		
-		System.out.println(seq);
-		if(service.delete(seq)>0) {
+		System.out.println(dto);
+		if(service.delete(dto)>0) {
 			rttr.addFlashAttribute("message"," 글 삭제 완료~!");
 		} else {
 			uri = "board/boardDetail";

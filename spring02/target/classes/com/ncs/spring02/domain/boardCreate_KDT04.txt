@@ -75,7 +75,7 @@ insert into board values(
 2.4) 계층적 답변형 게시판의 답글달기
 
 => board 조회
-select seq, id, root, step, indent from board order by root desc, step asc;
+select seq, id, title, root, step, indent from board order by root desc, step asc;
 
 => 각 컬럼의 역할
    -> root: 원글의 seq
