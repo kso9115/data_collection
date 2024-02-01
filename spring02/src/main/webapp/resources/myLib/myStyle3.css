@@ -84,6 +84,17 @@ input {
   width: 100%;
 }
 
+div{
+	display: flex;
+	width: 250px;
+}
+div:first-child{
+	display: flex;
+}
+div:nth-child(2){
+	display: flex;
+}
+
 button:active {
   transform: scale(0.95);
 }
@@ -91,6 +102,11 @@ button:active {
 tr{
 	margin-left: auto;
 	margin-right: auto;
+}
+
+submitTr{
+	display: flex;
+	flex-direction: column;
 }
 
 td {

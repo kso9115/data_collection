@@ -3,47 +3,72 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html>
+<link rel="stylesheet" type="text/css"
+	href="/spring02/resources/myLib/myStyle3.css">
+	
+
 <head>
 <meta charset="UTF-8">
 <title>** Join Form **</title>
-<link rel="stylesheet" type="text/css"
-	href="/spring02/resources/myLib/myStyle2.css">
+
 
 <!-- 외부 스크립트 가져올 때 : src 속성 사용 -->
 <script src="/spring02/resources/myLib/inCheck.js"></script>
 <script>
 
-	//** 화살표 함수
-	//=> 익명함수를 간단하게 표기
-	// function(){....}  
-	// () => {....}  
+//** ID 중복확인
+//=> UI 개선사항
+//=> 중복확인 버튼 추가
+// 처음 : 중복확인버튼_enable / submit_disable
+//=> 중복확인 완료후 submit 이 가능하도록
+// 중복확인버튼_disable / submit_enable
+//=> 중복확인 기능 : function idDupCheck()
+// id입력값의 무결성점검 -> id 확인요청 -> 서버로 전송 -> id , selectOne 결과 -> response: 사용가능/불가능 
+//=> 서버측 : 컨트롤러에 idDupCheck 요청을 처리하는 매핑메서드, view_Page(팝업창) 작성  
+function idDupCheck(){
 
-	//** 입력값의 무결성 점검
-	//=> ID 중복확인, 무결성 점검
+	// 1) id 입력값의 무결성 점검
+	if(!iCheck) { iCheck=idCheck(); 
+	} else {
+	// 2) 서비로 id 확인 요청 -> 결과는 view_Page(팝업창)으로 띄워줄 것
+	let url = "idDupCheck?id="+document.getElementById('id').value;
+	window.open(url,'_blank','width=400,height=300,resizable=yes,scrollbars=yes,toolbar=no,menubar=yes')
+	}
+}
 
-	//1) 모든항목  focusout 이벤트핸들러
-	// => 개별항목 점검확인하는 boolean Type 변수 (스위치변수) 
-	// => 개별항목 점검 function() 작성
-	//2) submit 진행전에 점검확인
-	// => 모든항목의 점검이 완료된 경우에만  submit 진행
-	// => function inCheck() 로 확인
-	// => submit 버튼의 onclick 리스너에 등록
-	//    ( submit 의 default 이벤트 고려 )
-	//----------------------------------------------------
-	//** 실습
+//** 화살표 함수
+//=> 익명함수를 간단하게 표기
+// function(){....}  
+// () => {....}  
+
+//** 입력값의 무결성 점검
+//=> ID 중복확인, 무결성 점검
+
+//1) 모든항목  focusout 이벤트핸들러
+// => 개별항목 점검확인하는 boolean Type 변수 (스위치변수) 
+// => 개별항목 점검 function() 작성
+//2) submit 진행전에 점검확인
+// => 모든항목의 점검이 완료된 경우에만  submit 진행
+// => function inCheck() 로 확인
+// => submit 버튼의 onclick 리스너에 등록
+//    ( submit 의 default 이벤트 고려 )
+//----------------------------------------------------
+//** 실습
 
 
-	/* 엄격모드 실행 */
-	"use strict"
+/* 엄격모드 실행 */
+"use strict"
 
-	// ** 입력값의 무결성을 확인해야한다.
-	// ** => ID 중복확인, 입력값 확인(규칙에 맞게 작성되어있는지)
 
-	// ** => 입력값의 무결성 확인
-	// 1) 전역변수 정의
-	//	=> 무결성 확인 결과를 위한 switch변수 생성(true/false 판별) 
-	//	=> id,password,name,age,info,point,birthday
-	//	=> password의 경우 두 번 확인(재확인)을 진행하므로 form에 추가
+	
+// ** 입력값의 무결성을 확인해야한다.
+// ** => ID 중복확인, 입력값 확인(규칙에 맞게 작성되어있는지)
+
+// ** => 입력값의 무결성 확인
+// 1) 전역변수 정의
+//	=> 무결성 확인 결과를 위한 switch변수 생성(true/false 판별) 
+//	=> id,password,name,age,info,point,birthday
+//	=> password의 경우 두 번 확인(재확인)을 진행하므로 form에 추가
 	let iCheck = false;
 	let pCheck = false;
 	let p2Check = false;
@@ -182,13 +207,13 @@ onload=function(){
 	// function 사용 시점 : submit 눌렀을 때
 	function inCheck() {
 		
-		if(!iCheck) {document.getElementById('iMessage').innerHTML=' 필수 입력, ID를 확인하세요 '}
-		if(!pCheck) {document.getElementById('pMessage').innerHTML=' 필수 입력, password를 확인하세요 '}
-		if(!p2Check) {document.getElementById('p2Message').innerHTML=' 필수 입력, password를 재확인하세요 '}
-		if(!nCheck) {document.getElementById('nMessage').innerHTML=' 필수 입력, 이름을 확인하세요 '}
-		if(!aCheck) {document.getElementById('aMessage').innerHTML=' 필수 입력, 나이를 확인하세요 '}
-		if(!oCheck) {document.getElementById('oMessage').innerHTML=' 필수 입력, 포인트를 확인하세요 '}
-		if(!bCheck) {document.getElementById('bMessage').innerHTML=' 필수 입력, 생일을 확인하세요 '}
+		if(!iCheck) {document.getElementById('iMessage').innerHTML=' 필수 입력, ID를 확인하세요 ';}
+		if(!pCheck) {document.getElementById('pMessage').innerHTML=' 필수 입력, password를 확인하세요 ';}
+		if(!p2Check) {document.getElementById('p2Message').innerHTML=' 필수 입력, password를 재확인하세요 ';}
+		if(!nCheck) {document.getElementById('nMessage').innerHTML=' 필수 입력, 이름을 확인하세요 ';}
+		if(!aCheck) {document.getElementById('aMessage').innerHTML=' 필수 입력, 나이를 확인하세요 ';}
+		if(!oCheck) {document.getElementById('oMessage').innerHTML=' 필수 입력, 포인트를 확인하세요 ';}
+		if(!bCheck) {document.getElementById('bMessage').innerHTML=' 필수 입력, 생일을 확인하세요 ';}
 		
 		if (iCheck && pCheck && p2Check && nCheck && aCheck && oCheck && bCheck) {
 			// 유효성 검사 완료 후 submit 확인		
@@ -221,7 +246,9 @@ onload=function(){
 			<tr height="40">
 				<td><label for="id">ID</label></td>
 				<td><input type="text" id="id" name="id" size="18"
-					placeholder="영문과 숫자 4~10글자"> <br> <span id="iMessage"
+					placeholder="영문과 숫자 4~10글자">
+					<button type="button" id="idDup" onclick="idDupCheck()">ID중복확인</button>
+					<br> <span id="iMessage"
 					class="eMessage"></span></td>
 
 				<!-- <td><input type="submit" value="중복검사" id="id" name="id"></td> -->
@@ -276,17 +303,19 @@ onload=function(){
 				<td><label for="rid">추천인</label></td>
 				<td><input type="text" id="rid" name="rid" size="18"></td>
 			</tr>
-			<tr>
+			<tr id="submitTr">
 
 				<td></td>
-				<td><input type="submit" value="회원가입" size="5" id="submitTag"
-					onclick="return inCheck()">&nbsp;&nbsp; <!-- => Tag 의 onclick 이벤트를 작성하고, onclick 이벤트핸들러가 가지고있던
+				<td><!-- <input type="submit" value="회원가입" size="5" id="submitTag"
+					onclick="return inCheck()" disabled> --> 
+					
+					<!-- => Tag 의 onclick 이벤트를 작성하고, onclick 이벤트핸들러가 가지고있던
                  			기본동작인 submit 을 선택적으로 진행되도록 해준다. 
                 			 - submit 진행 : default (또는 return true)
                				 - submit 정지 : submit 이벤트를 무효화 해야함 (return false 또는 이벤트.preventDefault())  -->
 
-					<input type="reset" value="취소" size="5">
-					<hr> <!-- Button Test
+					<!-- <input type="reset" value="취소" size="5"> --></td>
+					 <!-- Button Test
             			=> default : form 내부에서는  submit 와  동일하게 작동됨 
                        				 inCheck() 의 return 값에 따라 (true 면) submit 진행됨 
             			=> 단, type 속성을 선택하면 (button, reset, submit 등) 속성에 맞게 실행됨
@@ -298,10 +327,14 @@ onload=function(){
 						type:submit</button> <span>input type:submit 과 동일하게 작동 / 리턴 사용해줘야함</span><br>
 					<button type="submit" onclick="inCheck()">ButtonTest3
 						type:submit</button> <span>input type:submit 과 동일하게 작동 / 리턴 사용하지 않아도 됨</span> -->
-						</td>
 			</tr>
 
 		</table>
+		<div>
+		<input type="submit" value="회원가입" size="5" id="submitTag"
+					onclick="return inCheck()" disabled>
+		<input type="reset" value="취소" size="5">
+		</div>
 	</form>
 	&nbsp;
 	<c:if test="${!empty requestScope.message}">

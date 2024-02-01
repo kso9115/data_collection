@@ -5,6 +5,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -34,6 +35,21 @@ public class MemberController {
 
 	@Autowired(required = false)
 	MemberService service;
+	
+	// ID 중복 확인
+	@GetMapping("/idDupCheck")
+	// 사용가능한 아이디인지 아닌지 확인해야하므로 model 객체 필요
+	public void idDupCheck(@RequestParam("id") String id, Model model) {
+		// 1) newID 존재여부 확인 & 결과처리
+		if(service.selectOne(id)!=null) {	// 현재 아이디가 null이 아닐경우
+			// 사용 불가능 : 모델객체에 파라미터를 담아 전달
+			model.addAttribute("idUse", "F");
+		} else {
+			// 사용 가능
+			model.addAttribute("idUse", "T");
+		}
+		
+	} // idDupCheck()
 
 	// 리턴타입이 자유롭다고 해서, int를 넣을수는 없음 : 
 	// ModelAndView or string or void 타입 사용 가능
