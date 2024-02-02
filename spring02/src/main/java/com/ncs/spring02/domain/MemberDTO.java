@@ -4,6 +4,8 @@ package com.ncs.spring02.domain;
 //=> getter/setter
 //=> toString
 
+import org.springframework.web.multipart.MultipartFile;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -38,7 +40,15 @@ public class MemberDTO {
 	private double point;
 	private String birthday;
 	private String rid;			// 추천인
-
+	private String uploadfile;	// Table 보관용(File_Name): DB보관용
+	
+	private MultipartFile uploadfilef;	// 파일에 대한 정보가 들어있는 타입 생성
+	// => form 의 Upload_File 의 정보를 전달받기위한 컬럼
+	//	-> MultipartFile (i) -> CommonsMultipartFile
+	//	-> dependency 추가(라이브러리 추가가 필요하다)
+	//	-> 구현체 CommonsMultipartFile을 생성해놓아야 바로 주입이 가능하다.=> 라이브러리이기때문에 애노테이션하는게 아니라 xml에서 추가
+	//	-> pw는 서블릿/루트에 모두 넣어도되나, 이미지 처리의 경우 서블릿 컨테이너가 빈번하게 사용하는 부분이기 때문에 서블릿 xml에 저장
+	   
 	
 	// lombok 애노테이션 활용하기
 	// 2. getter/setter

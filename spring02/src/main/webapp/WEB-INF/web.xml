@@ -4,7 +4,8 @@
 	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee; https://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
 	<!-- ... /ns/javaee; https://ja.... 사이에 ; 넣어주면 오류 사라짐  -->
    
-   <!-- ** listener 설정 -->
+   <!-- ** listener 설정 : ContextLoaderListener에게 제공되는 작업 지시서
+   서블릿이 실행되기 이전 단계에서 무언가 처리해야할 작업이 있다면 처리를 위해서 제공되는 것으로, 선택적으로 사용이 가능하다. -->
 	<!-- The definition of the Root Spring Container shared by all Servlets and Filters -->
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
@@ -16,7 +17,7 @@
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
 	</listener>
 
-	<!-- Processes application requests -->
+	<!-- Processes application requests / spring 디스패처 사용을 위한 세팅 -->
 	<servlet>
 		<servlet-name>appServlet</servlet-name>
 		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
@@ -32,7 +33,7 @@
 		<url-pattern>/</url-pattern>
 	</servlet-mapping>
 	
-	<!-- 한글처리 필터 -->
+	<!-- 한글처리 필터 : 한글 변환을 위한 세팅 -->
    <filter>
       <filter-name>testFilter</filter-name>
       <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>

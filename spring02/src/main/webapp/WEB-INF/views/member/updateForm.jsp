@@ -8,6 +8,27 @@
 <title>** Update Form **</title>
 </head>
 
+<link rel="stylesheet" type="text/css"
+	href="/spring02/resources/myLib/myStyle3.css">
+<style>
+  a {
+  	  text-decoration: none;
+  }
+  
+  a:link, a:visited {
+     background-color: #FFA500;
+     color: maroon;
+     padding: 15px 25px;
+     text-align: center;
+     text-decoration: none;
+     display: inline-block;
+     
+}
+ a:hover, a:active {
+     background-color: #FF4500;
+}
+</style>
+
 <body>
 
 <h2>** Web MVC2 Update Page **</h2>
@@ -19,10 +40,18 @@
 			<td><label for="id">ID</label></td>
 			<td><input type="text" id="id" name="id" size="18" value="${requestScope.mdetail.id}" readonly placeholder="영문과 숫자 4~10글자"></td>
 		</tr>
-		<tr height="40">
+		<%-- <tr height="40">
 			<td><label for="password">Password</label></td>
 			<td><input type="password" id="password" name="password" value="${requestScope.mdetail.password}" size="18"></td>
+		</tr> --%>
+		<!-- passwordEncoder 적용 후 분리 -->
+		<tr height="40">
+			<td><label for="password">Password</label></td>
+			<td>
+				<a href="pwUpdate">비밀번호 변경</a>
+			</td>
 		</tr>
+		
 		<tr height="40">
 			<td><label for="name">Name</label></td>
 			<td><input type="text" id="name" name="name" value="${requestScope.mdetail.name}" size="18"></td>
@@ -57,20 +86,19 @@
 			<td><label for="rid">추천인</label></td>
 			<td><input type="text" id="rid" name="rid" value="${requestScope.mdetail.rid}" size="18"></td>
 		</tr>
-		<tr>
-		
-		<td></td>
-		<td>
-		<input type="submit" value="수정완료" size="5">&nbsp;&nbsp;
-		<input type="reset"  value="취소" size="5">
-		</td>
-		</tr>
 		
 	</table>
+	
+	<div align="center">
+		<input type="submit" value="수정완료" size="5">&nbsp;&nbsp;
+		<input type="reset"  value="취소" size="5">
+	</div>
 </form>
-<c:if test="${!empty requestScope.message}">
-${requestScope.message}<br>
-</c:if>
+<div align="center">
+	<c:if test="${!empty requestScope.message}">
+	${requestScope.message}<br>
+	</c:if>
+</div>
 
 <hr>
 &nbsp;<a href="/spring02/home">Home</a>&nbsp;

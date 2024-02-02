@@ -6,6 +6,8 @@
 <head>
 <meta charset="UTF-8">
 <title>** Web02_MVC02 MemberList **</title>
+<link rel="stylesheet" type="text/css" href="/spring02/resources/myLib/myStyle4.css">
+
 </head>
 <body>
 
@@ -16,9 +18,10 @@
 	</c:if>
 	
 <table border="1" style="width:100%">
+
 		<tr bgcolor="DarkSlateBlue" style="color:white">
 			<th>ID</th>
-			<th>Password</th>
+			<!-- <th>Password</th> -->
 			<th>Name</th>
 			<th>Age</th>
 			<th>Jno</th>
@@ -26,12 +29,13 @@
 			<th>Point</th>
 			<th>Birthday</th>
 			<th>추천인</th>
+			<th>프로필사진</th>
 		</tr>
 <c:if test="${!empty requestScope.mlist}">
 	<c:forEach var="m" items="${requestScope.mlist}">
 		<tr bgcolor="Lavender">
 			<td>${m.id}</td>
-			<td>${m.password}</td>
+			<%-- <td>${m.password}</td> --%>
 			<td>${m.name}</td>
 			<td>${m.age}</td>
 			<td>${m.jno}</td>
@@ -39,6 +43,8 @@
 			<td>${m.point}</td>
 			<td>${m.birthday}</td>
 			<td>${m.rid}</td>
+			<td><img alt="myImage" width="70" height="70"
+					src="/spring02/resources/uploadImages/${m.uploadfile}"></td>
 		</tr>
 	</c:forEach>
 </c:if>

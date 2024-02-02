@@ -1,14 +1,24 @@
 package com.ncs.spring02.controller;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.ncs.spring02.domain.MemberDTO;
@@ -36,6 +46,12 @@ public class MemberController {
 	@Autowired(required = false)
 	MemberService service;
 	
+	@Autowired
+//	PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+	PasswordEncoder passwordEncoder;;
+	// new BCryptPasswordEncoder() 클래스를 만드는 작업을 해주어햐한다.
+	// root-context.xml에 bean 생성
+	
 	// ID 중복 확인
 	@GetMapping("/idDupCheck")
 	// 사용가능한 아이디인지 아닌지 확인해야하므로 model 객체 필요
@@ -50,6 +66,9 @@ public class MemberController {
 		}
 		
 	} // idDupCheck()
+	
+	
+	
 
 	// 리턴타입이 자유롭다고 해서, int를 넣을수는 없음 : 
 	// ModelAndView or string or void 타입 사용 가능
@@ -92,7 +111,7 @@ public class MemberController {
 	}
 	
 	// 로그인 화면 처리 : 입력받은 값에 대한 처리
-	@RequestMapping(value = "/login", method =RequestMethod.POST)
+	@PostMapping("/login")
 	public String login(HttpSession session, Model model, MemberDTO dto) {	// 메세지 처리를 위한 model 변수 사용
 		// 포워드 방식으로 home.jsp 사용 시 homeController 에서 전달해주는 내용이 들어가지 않음(시간이라던가..)
 		// 매핑 메서드의 인자객체와 동일한 컬럼명의 값은 자동으로 반환
@@ -115,7 +134,11 @@ public class MemberController {
 	    // => 성공: id, name은 session에 보관, home 으로
 	    // => 실패: 재로그인 유도
 		dto = service.selectOne(dto.getId());	// 비밀번호도 dto에서 가져오기때문에 미리 위에서 저장해놓아야한다
-		if(dto!=null && dto.getPassword().equals(password)) {
+
+		//		if(dto!=null && dto.getPassword().equals(password)) {	// 기존 패스워드 검증 코드
+
+		// 패스워드 인코더 진행 (입력받은 값의 password, dto.getId() 하여 db에 들어가있는 비밀번호 즉 다이제스트를 비교)
+		if(dto!=null && passwordEncoder.matches(password, dto.getPassword())) {	
 			// 성공
 			session.setAttribute("loginID", dto.getId());
 			session.setAttribute("loginName", dto.getName());
@@ -158,20 +181,101 @@ public class MemberController {
 	}
 	
 	// 6. joinForm
-	@RequestMapping(value = {"/joinForm"}, method = RequestMethod.GET)
+	@GetMapping("/joinForm")
 	public void joinForm() {
 	}
 
 	// 6. join
 	@RequestMapping(value = {"/join"}, method = RequestMethod.POST)
-	public String join(Model model, MemberDTO dto) {
+	public String join(Model model, MemberDTO dto,HttpServletRequest request) throws IOException {
 		// 1. 요청 분석
 		// => 이전 : 한글처리, request 값을 dto에 set하여 진행했으나,
 		// => 현재 : 한글은 filter / request처리는 parameter(매개변수)로 자동 처리
 		String uri = "member/loginForm";	// 성공 시
 		
+		// Upload File 처리하기
+		// -> 전달받은 파일을 저장 : file1 (서버의 물리적 실제저장위치 필요함)
+		// -> 전달된 파일의 정보를 테이블에 저장 : file2
+		// => MultipartFile 클래스 활용 : 위의 과정을 지원해주는 전용 객체
+		
+		
+		// 1) 물리적 실제저장 위치 확인
+		// 1-1) 현재 웹어플리케이션의 실행위치
+		//		=> 이클립스 개발환경 (배포 전) : ~~.eclipse.~~ 포함
+		//		=> 톰캣 서버 (배포 후) : ~~.eclipse.~~ 포함되어있지 ㅇ낳음
+		String realPath = request.getRealPath("/");
+		System.out.println("** realPath => "+realPath);
+		
+		// 1.2) realPath를 이용해서 물리적 저장위치 (file1) 확인
+		if(realPath.contains(".eclipse."))	// 개발중
+			realPath = "E:\\ksoo\\gitANDeclipse\\spring02\\src\\main\\webapp\\resources\\uploadImages\\";	// 현재 파일의 경로
+		else realPath = "resources\\uploadImages\\";	// 배포 후 서버에 저장되는 경로 => 모두 
+		
+	    // 1.3) 폴더 만들기 : 폴더 자체가 존재하지 않을수도 있다는 경우를 가정(uploadImages)
+		// => File type 객체 생성 : new File("경로");
+	    // => file.exists()
+	    //   -> 파일 또는 폴더가 존재하는지 리턴
+	    //   -> 폴더가 아닌, 파일존재 확인하려면 file.isDirectory() 도 함께 체크해야함. 
+	    //     ( 참고: https://codechacha.com/ko/java-check-if-file-exists/ )
+	    // => file.isDirectory() : 폴더이면 true 그러므로 false 이면 file 이 존재 한다는 의미가 됨. 
+	    // => file.isFile()
+	    //   -> 파일이 존재하는 경우 true 리턴,
+	    //      file의 Path 가 폴더인 경우는 false 리턴
+		File file = new File(realPath);	// realpath에 있는 값을 file 타입으로 변경하는 것
+		if(!file.exists()) {	// 만약 realpath가 uploadImages일때 폴더여도 파일로 인식해버릴수잇음
+			// => 저장 폴더가 존재하지 않는경우 만들어준다
+			file.mkdir();
+		}
+		
+	    // --------------------------------------------
+	    // ** File Copy 하기 (IO Stream)
+	    // => 기본이미지(cat04.gif) 가 uploadImages 폴더에 없는경우 기본폴더(images) 에서 가져오기
+	    // => IO 발생: Checked Exception 처리
+		file = new File(realPath+"basicman4.png"); // uploadImages 폴더에 파일존재 확인을 위한 경로 설정 후 객체생성
+	      if ( !file.isFile() ) { // 존재하지않는 경우(파일존재의 여부를 확인) -> 디렉토리의 경로를 확인해주는 것
+	         String basicImagePath 
+	               = "E:\\ksoo\\gitANDeclipse\\spring02\\src\\main\\webapp\\resources\\images\\basicman4.png";
+	         FileInputStream fi = new FileInputStream(new File(basicImagePath));
+	         // => basicImage 읽어 파일 입력바이트스트림 생성
+	         FileOutputStream fo = new FileOutputStream(file); 
+	         // => 목적지 파일(realPath+"basicman4.png") 출력바이트스트림 생성  
+	         FileCopyUtils.copy(fi, fo);
+	      }
+	      // --------------------------------------------
+		
+	    // --------------------------------------------
+	      // ** MultipartFile
+	      // => 업로드한 파일에 대한 모든 정보를 가지고 있으며 이의 처리를 위한 메서드를 제공한다.
+	      //    -> String getOriginalFilename(), 
+	      //    -> void transferTo(File destFile),
+	      //    -> boolean isEmpty()
+	      
+	      // 1.4) 저장경로 완성
+	      // => 기본 이미지 저장
+	      String file1="", file2="basicman1.jpg";
+	      
+	      MultipartFile uploadfilef = dto.getUploadfilef();
+	      if ( uploadfilef!=null && !uploadfilef.isEmpty() ) {
+	         // => image_File 을 선택함  
+	         // 1.4.1) 물리적위치 저장 (file1)
+	         file1=realPath+uploadfilef.getOriginalFilename(); //저장경로(relaPath+화일명) 완성
+	         uploadfilef.transferTo(new File(file1)); //해당경로에 저장(붙여넣기)
+	         
+	         // 1.4.2) Table 저장경로 완성 (file2)
+	         file2 = uploadfilef.getOriginalFilename();
+	      }
+	      // --------------------------------------------
+
+	    	
+	      
+	      
+		dto.setUploadfile(file2);
 		
 		// 2. 서비스 처리 & 결과
+		// => PasswordEncoder 적용 : 입력받은 비밀번호값을 인코딩한 후 db의 비밀번호에 저장해주기
+		dto.setPassword(passwordEncoder.encode(dto.getPassword()));
+		
+		
 		if(service.insert(dto)>0) {
 			//성공
 			model.addAttribute("message", " 회원가입 성공, 로그인 하심 됨니당ㅋㅋ ");
@@ -207,6 +311,41 @@ public class MemberController {
 		}
 		return uri;
 	}
+	
+	// 7-1 pwUpdate : 비밀번호경로이동
+		// password 수정 PasswordEncoder 추가 후 pwUpdate 경로로의 이동 진행
+		@GetMapping("/pwUpdate")
+		public void pwUpdate() {
+			// View_name 생략
+		}
+
+		// password Update 
+		// 이동 후 처리 진행
+		// Service, DAO에 pwUpdate(dto=> pw와 id도 확인해야댐)메서드 추가
+		// 성공 시 재로그인 유도 : 로그인 창으로 & 세션 무효화 진행
+		// 실패 시 재수정 유도 : pwUpdate 창으로
+		@PostMapping("/pwUpdate")
+		public String pwUpdate(HttpSession session, MemberDTO dto, Model model) {
+			// 1. 요청분석 : 세션에 저장된 아이디값을 가져와 비교
+			dto.setId((String)session.getAttribute("loginID"));
+			dto.setPassword(passwordEncoder.encode(dto.getPassword()));	// 비밀번호 인코더
+			
+			String uri = "member/loginForm";	// 성공 시 이동경로
+
+			// 2. 서비스 처리
+			if(service.pwUpdate(dto)>0) {
+				//성공
+				model.addAttribute("message", " 비밀번호 업데이트에 성공하였습니다 재로그인을 해주세요 ⎝⍢⎠");
+				session.invalidate();
+		
+			} else {
+				//실패
+				model.addAttribute("message", " 비밀번호 업데이트 실패!!!!!!!!!!! ⎝⍥⎠ ");
+				uri ="member/pwUpdate";
+			}
+			return uri;
+		}
+
 
 	// 8. delete
 	@RequestMapping(value = {"/delete"}, method = RequestMethod.GET)

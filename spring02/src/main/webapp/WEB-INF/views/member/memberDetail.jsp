@@ -11,7 +11,7 @@
 </head>
 
 <style>
-	tbody{
+/* 	tbody{
 	display : flex;
 	width : 
 	}
@@ -19,19 +19,63 @@
 	tr{
 	display : flex;
 	flex-direction: column;
-	}
+	} */
 </style>
-<link rel="stylesheet" type="text/css" href="/spring02/resources/myLib/myStyle.css">
+<link rel="stylesheet" type="text/css" href="/spring02/resources/myLib/myStyle4.css">
 
 
 <body>
 <c:set var="m" value="${requestScope.mdetail}"></c:set>
 <form action="detail" method="post">
 	
-	<table border="1" style="width: 100%">
-		<tr bgcolor="DarkCyan" style="color:white">
+	<table border="1" style="width: 60%">
+	
+	<c:if test="${!empty m}">
+		<tr>
+			<th>프로필사진</th>
+			<td><img alt="myImage" width="350" height="300"
+					src="/spring02/resources/uploadImages/${m.uploadfile}"></td>
+		</tr>
+		<tr>
 			<th>ID</th>
-			<th>Password</th>
+			<td>${m.id}</td>
+		</tr>
+		<tr>
+			<th>Name</th>
+			<td>${m.name}</td>
+		</tr>
+		<tr>
+			<th>Age</th>
+			<td>${m.age}</td>
+		</tr>
+		<tr>
+			<th>Jno</th>
+			<td>${m.jno}</td>
+		</tr>
+		<tr>
+			<th>Info</th>
+			<td>${m.info}</td>
+		</tr>
+		<tr>
+			<th>Point</th>
+			<td>${m.point}</td>
+		</tr>
+		<tr>
+			<th>Birthday</th>
+			<td>${m.birthday}</td>
+		</tr>
+		<tr>
+			<th>추천인</th>
+			<td>${m.rid}</td>
+		</tr>
+		
+	</c:if>
+		
+	<%-- 	<tr bgcolor="DarkCyan" style="color:white">
+			<th>프로필사진</th>
+			
+			<th>ID</th>
+			<!-- <th>Password</th> -->
 			<th>Name</th>
 			<th>Age</th>
 			<th>Jno</th>
@@ -43,6 +87,8 @@
 		
 	<c:if test="${!empty m}">
 		<tr bgcolor="LightCyan">
+			<td><img alt="myImage" width="400" height="400"
+					src="/spring02/resources/uploadImages/${m.uploadfile}"></td>
 			<td>${m.id}</td>
 			<td>${m.password}</td>
 			<td>${m.name}</td>
@@ -53,7 +99,7 @@
 			<td>${m.birthday}</td>
 			<td>${m.rid}</td>
 		</tr>
-	</c:if>
+	</c:if> --%>
 	
 	<c:if test="${empty m}">
 		<tr><td colspan="2"><h3> 출력할 차료가 없습니다. </h3></td></tr>
