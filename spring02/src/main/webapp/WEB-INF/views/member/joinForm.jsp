@@ -324,7 +324,25 @@ onload=function(){
 			<!-- File Upload 기능 추가 -->
 			<tr height="40">
 				<td><label for="uploadfilef">Image</label></td>
-				<td><input type="file" id="uploadfilef" name="uploadfilef" size="18"></td>
+				<td><img alt="myImage" width="250" height="300" class="select_img"><br>
+				<input type="file" id="uploadfilef" name="uploadfilef" size="18"></td>
+				
+			<script>
+        		document.getElementById('uploadfilef').onchange=function(e){
+         			if(this.files && this.files[0]) {
+            			let reader = new FileReader;
+            			reader.readAsDataURL(this.files[0]);
+             				reader.onload = function(e) {
+                			// => jQuery를 사용하지 않는경우 
+               				document.getElementsByClassName('select_img')[0].src=e.target.result;
+                
+               				//$(".select_img").attr("src", e.target.result)
+		               		//            .width(70).height(90); 
+               				} // onload_function
+          			} // if   
+        		}; //change  
+			</script>
+
 			</tr>
 			<tr id="submitTr">
 

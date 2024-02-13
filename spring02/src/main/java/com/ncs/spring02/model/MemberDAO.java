@@ -201,7 +201,8 @@ public class MemberDAO {
 	// => id는 primary_key
 	// => password의 경우 암호화되어있는 부분이기 때문에 이후에는 별도로 생성하여 변경해야한다.(실습에선 우선 진행)
 	public int update(MemberDTO dto) {
-		sql = "update member set name=?, age=?, jno=?, info=?, point=?, birthday=?, rid=? where id = ?";
+		sql = "update member set name=?, age=?, jno=?, "
+				+ "info=?, point=?, birthday=?, rid=?, uploadfile=? where id = ?";
 		try {
 			pst = cn.prepareStatement(sql);
 //			pst.setString(1, dto.getPassword());
@@ -212,7 +213,8 @@ public class MemberDAO {
 			pst.setDouble(5, dto.getPoint());
 			pst.setString(6, dto.getBirthday());
 			pst.setString(7, dto.getRid());
-			pst.setString(8, dto.getId());
+			pst.setString(8, dto.getUploadfile());
+			pst.setString(9, dto.getId());
 
 			if(pst.executeUpdate() > 0) {
 				return pst.executeUpdate();

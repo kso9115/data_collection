@@ -6,7 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ncs.spring02.domain.MemberDTO;
-import com.ncs.spring02.model.MemberDAO;
+
+import mapperInterface.MemberMapper;
 
 //@Component
 @Service
@@ -14,48 +15,56 @@ public class MemberServiceImpl implements MemberService {
 	// 전역변수 선언
 	// IOC/DI 적용하여 자동주입 받는 것이다.> 어디선가 생성이 되어있어야 자동주입이가능
 	// MemberDAO 클래스에서 component를 통해 bean을 컨테이너에 담아놓은 상태이다.
-	@Autowired(required = false)
-	MemberDAO dao;
+//	@Autowired(required = false)
+//	MemberDAO dao;
 //	MemberDAO dao = new MemberDAO();
 
+	// **MyBatis 적용
+	// => mapper 구현객체는 스프링이 실행 시 자동으로 만들어 주입해준다.
+	// 그러므로 개발자는 interface와 xml만 구현하고 Serivce와 연동만 해주면 된다.
+	// 즉, Java interface의 Mapper, Mapper의 namespace값이 모두 동일해야한다.
+	// 그리고 해당 메서드는 
+	@Autowired(required = false)
+	MemberMapper mapper;
+	
 	// selectList
 	@Override
 	public List<MemberDTO> selectList() {
-		return dao.selectList();
+		return mapper.selectList();
 	}
 
 	// 리스트 멤버 출력을 위한 서비스추가
 	@Override
 	public List<MemberDTO> selectJoList(int jno) {
-		return dao.selectJoList(jno);
+		return mapper.selectJoList(jno);
 	}
 
 	// selectOne
 	@Override
 	public MemberDTO selectOne(String id) {
-		return dao.selectOne(id);
+		return mapper.selectOne(id);
 	}
 
 	// insert
 	@Override
 	public int insert(MemberDTO dto) {
-		return dao.insert(dto);
+		return mapper.insert(dto);
 	}
 
 	// update
 	@Override
 	public int update(MemberDTO dto) {
-		return dao.update(dto);
+		return mapper.update(dto);
 	}
 
 	// delete
 	@Override
 	public int delete(String id) {
-		return dao.delete(id);
+		return mapper.delete(id);
 	}
 
 	@Override
 	public int pwUpdate(MemberDTO dto) {
-		return dao.pwUpdate(dto);
+		return mapper.pwUpdate(dto);
 	}
 }

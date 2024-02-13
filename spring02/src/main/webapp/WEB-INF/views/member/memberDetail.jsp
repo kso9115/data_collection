@@ -33,7 +33,7 @@
 	<c:if test="${!empty m}">
 		<tr>
 			<th>프로필사진</th>
-			<td><img alt="myImage" width="350" height="300"
+			<td><img alt="myImage" width="250" height="300"
 					src="/spring02/resources/uploadImages/${m.uploadfile}"></td>
 		</tr>
 		<tr>
