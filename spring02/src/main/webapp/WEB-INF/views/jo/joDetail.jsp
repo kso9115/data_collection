@@ -33,6 +33,7 @@
 			<th>조번호</th>
 			<th>조이름</th>
 			<th>조장</th>
+			<th>조장이름</th>
 			<th>Project</th>
 			<th>Slogan</th>
 		</tr>
@@ -42,6 +43,7 @@
 			<td>${d.jno}</td>
 			<td>${d.jname}</td>
 			<td>${d.captain}</td>
+			<td>${d.name}</td>
 			<td>${d.project}</td>
 			<td>${d.slogan}</td>
 		</tr>
@@ -57,7 +59,7 @@
 	<table border="1" style="width: 100%">
 		<tr bgcolor="DarkCyan" style="color:white">
 			<th>ID</th>
-			<th>Password</th>
+			<!-- <th>Password</th> -->
 			<th>Name</th>
 			<th>Age</th>
 			<th>Jno</th>
@@ -71,7 +73,7 @@
 		<c:forEach var="l" items="${requestScope.jolist}">
 		<tr bgcolor="LightCyan">
 			<td>${l.id}</td>
-			<td>${l.password}</td>
+			<%-- <td>${l.password}</td> --%>
 			<td>${l.name}</td>
 			<td>${l.age}</td>
 			<td>${l.jno}</td>

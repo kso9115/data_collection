@@ -6,34 +6,37 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ncs.spring02.domain.JoDTO;
-import com.ncs.spring02.domain.MemberDTO;
 import com.ncs.spring02.model.JoDAO;
-import com.ncs.spring02.model.MemberDAO;
+
+import mapperInterface.JoMapper;
 
 @Service
 public class JoServiceImpl implements JoService {
 	
+//	@Autowired(required = false)
+//	JoDAO dao;
+	
 	@Autowired(required = false)
-	JoDAO dao;
+	JoMapper mapper;
 	
 	@Override
 	public List<JoDTO> selectList(){
-		return dao.selectList();
+		return mapper.selectList();
 	}
 	@Override
-	public JoDTO selectJoOne(int jno) {
-		return dao.selectOne(jno);
+	public JoDTO selectOne(int jno) {
+		return mapper.selectOne(jno);
 	}
 	@Override
-	public int joInsert(JoDTO jdto) {
-		return dao.insert(jdto);
+	public int insert(JoDTO jdto) {
+		return mapper.insert(jdto);
 	}
 	@Override
-	public int joUpdate(JoDTO jdto) {
-		return dao.update(jdto);
+	public int update(JoDTO jdto) {
+		return mapper.update(jdto);
 	}
 	@Override
 	public int delete(int jno) {
-		return dao.delete(jno);
+		return mapper.delete(jno);
 	}
 }

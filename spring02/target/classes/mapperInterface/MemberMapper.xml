@@ -5,6 +5,10 @@
 <mapper namespace="mapperInterface.MemberMapper">
 
 <!-- selectJoList -->
+<!-- 조 디테일 추가를 위해 member에서 추가 업데이트 -->
+	<select id="selectJoList" resultType="com.ncs.spring02.domain.MemberDTO">
+		select * from member where jno = #{jno} 
+	</select>
 
 <!-- selectList -->
 	<select id="selectList" resultType="com.ncs.spring02.domain.MemberDTO">

@@ -17,7 +17,7 @@ public class JoDTO {
 	private String project;
 	private String slogan;
 	
-	private String cname; // 조인을 위한 필드값 추가(롬복으로인해 게터세터필요없음)
+	private String name; // 조인을 위한 필드값 추가(롬복으로인해 게터세터필요없음)
 
 	// 1) 생성자 정의 : 모든값을 초기화하는 생성자
 	// 2) getter & setter

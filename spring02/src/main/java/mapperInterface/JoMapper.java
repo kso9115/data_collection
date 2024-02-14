@@ -1,12 +1,12 @@
-package com.ncs.spring02.service;
+package mapperInterface;
 
 import java.util.List;
 
 import com.ncs.spring02.domain.JoDTO;
 
-public interface JoService {
-
-	List<JoDTO> selectList(); 
+public interface JoMapper {
+	
+	List<JoDTO> selectList();
 
 	JoDTO selectOne(int jno);
 

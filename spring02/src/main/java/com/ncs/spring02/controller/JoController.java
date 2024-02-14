@@ -62,7 +62,7 @@ public class JoController {
 		// 조별 멤버 리스트 출력을 위해 memberservice 호출하여 데이터를 jolist 객체에 담아 jsp에 전달
 		model.addAttribute("jolist", service.selectJoList(jno));
 		// 조별 상세정보 출력을 위해 객체에 담아준 후 jsp에 전달
-		model.addAttribute("joDetail", joservice.selectJoOne(jno));
+		model.addAttribute("joDetail", joservice.selectOne(jno));
 		return uri;
 	}
 
@@ -81,7 +81,7 @@ public class JoController {
 		
 		
 		// 2. 서비스 처리 & 결과
-		if(joservice.joInsert(jdto)>0) {
+		if(joservice.insert(jdto)>0) {
 			//성공
 			rttr.addFlashAttribute("message", " 조 추가등록 성공ㅋㅋ ");
 		} else {
@@ -105,7 +105,7 @@ public class JoController {
 		model.addAttribute("joDetail", dto);
 
 		// 2. 서비스 처리 & 결과
-		if (joservice.joUpdate(dto) > 0) {
+		if (joservice.update(dto) > 0) {
 			// 성공
 			model.addAttribute("message", " 정보수정 성공 굳ㅋㅋ ");
 			// => name 수정을 했을수도 있으므로 세션에 저장되는 loginName을 수정해줘야한다
