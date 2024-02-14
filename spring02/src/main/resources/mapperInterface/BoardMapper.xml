@@ -45,6 +45,26 @@
 => Oracle 의 경우:  (select nvl(max(seq),0)+1 from board)  
 -->
 
+
+<!-- ================================================= -->
+
+		
+	<!-- BoardPaging 
+		=> Mysql : Limit a,b(a개를 제외하고 b개를 가져옴 -> a+1부터 b개
+		=> Oracle : Between a AND b(a번째부터 b까지)-->
+		
+	<select id="bPageList" resultType="com.ncs.spring02.domain.BoardDTO">
+		select * from board 
+		order by root desc, step asc
+		limit #{sno},#{rowPerPage}
+	</select>
+	<!-- totalRowsCount :  -->
+	<select id="totalRowsCount" resultType="int">
+		select count(*) from board
+	</select>
+	
+<!-- ================================================= -->
+	
    <!-- 1. selectList    -->
    <select id="selectList" resultType="com.ncs.spring02.domain.BoardDTO">
       select * from board Order By root desc, step asc

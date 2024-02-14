@@ -4,7 +4,14 @@ import java.util.List;
 
 import com.ncs.spring02.domain.BoardDTO;
 
+import pageTest.Criteria;
+
 public interface BoardMapper {
+	
+	// ** board paging
+	public List<BoardDTO> bPageList(Criteria cri);
+	public int totalRowsCount(Criteria cri);
+	
 	
 	public List<BoardDTO> selectList();
 	// 2. selectOne

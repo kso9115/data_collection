@@ -9,6 +9,7 @@ import com.ncs.spring02.domain.BoardDTO;
 import com.ncs.spring02.model.BoardDAO;
 
 import mapperInterface.BoardMapper;
+import pageTest.Criteria;
 
 @Service
 public class BoardServiceImpl implements BoardService {
@@ -19,6 +20,17 @@ public class BoardServiceImpl implements BoardService {
 	@Autowired
 	BoardMapper mapper;
 
+	@Override
+	public List<BoardDTO> bPageList(Criteria cri) {
+		return mapper.bPageList(cri);
+	}
+	
+	@Override
+	public int totalRowsCount(Criteria cri) {
+		return mapper.totalRowsCount(cri);
+	}
+	
+	
 	@Override
 	public List<BoardDTO> selectList() {
 		return mapper.selectList();
@@ -52,6 +64,7 @@ public class BoardServiceImpl implements BoardService {
 			return 1;
 		} else return 0;
 	}
+
 	
 	
 }

@@ -10,12 +10,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.mysql.cj.Session;
-import com.mysql.cj.protocol.x.SyncFlushDeflaterOutputStream;
 import com.ncs.spring02.domain.BoardDTO;
 import com.ncs.spring02.service.BoardService;
 
 import lombok.AllArgsConstructor;
+import pageTest.Criteria;
+import pageTest.PageMaker;
 
 @Controller
 @AllArgsConstructor	// board service를 주입받기 위해서(autowired 대신 전체 필드 초기화하는 법)
@@ -23,6 +23,28 @@ import lombok.AllArgsConstructor;
 public class BoardController {
 	
 	BoardService service;
+	
+	// ** Board_Paging
+	@GetMapping("/bPageList")
+	public void bPageList(Model model, Criteria cri, PageMaker pageMaker) {
+		// 1) Criteria 처리
+		// 파라미터 값으로 전달했기 때문에 자동으로 데이터 들어감
+		// currPage, rowsPerPage 값들은 Parameter 로 전달되어 자동으로 cri에 set
+		cri.setSnoEno();
+		
+		// 2) Service
+		// => 출력 대상인 Rows를 select
+		// bPageList()는 페이지의 수를 출력해주기때문에 매개변수(인자)를 전달받아야한다
+		model.addAttribute("blist", service.bPageList(cri));
+		
+		// 3) View 처리 : PageMaker 사용
+		// => cri, totalRowsCount가 필요하다(Read from DB)
+		pageMaker.setCri(cri);
+		// 전체 갯수를 세기때문에 현재로는 매개변수 필요없으나, 추후 검색 시는 필요할 수 있음
+		pageMaker.setTotalRowsCount(service.totalRowsCount(cri)); 
+		model.addAttribute("pageMaker", pageMaker);
+		
+	}
 	
 	// 1. Board List
 	@GetMapping("/boardList")
