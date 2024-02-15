@@ -58,6 +58,7 @@ public class Criteria {
 	}
 	
 	// 2-3) setSnoEno : sno, eno 계산
+	// 페이지 블록에서의 sno를 구하기 위한 것
 	public void setSnoEno() {
 		if(this.sno<1) this.sno=1;
 		this.sno=(this.currPage-1)*this.rowPerPage;

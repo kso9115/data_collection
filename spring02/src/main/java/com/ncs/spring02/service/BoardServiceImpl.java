@@ -6,10 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ncs.spring02.domain.BoardDTO;
-import com.ncs.spring02.model.BoardDAO;
 
 import mapperInterface.BoardMapper;
-import pageTest.Criteria;
+import pageTest.SearchCriteria;
 
 @Service
 public class BoardServiceImpl implements BoardService {
@@ -20,14 +19,36 @@ public class BoardServiceImpl implements BoardService {
 	@Autowired
 	BoardMapper mapper;
 
+	// ** board Check_List
 	@Override
-	public List<BoardDTO> bPageList(Criteria cri) {
-		return mapper.bPageList(cri);
+	public List<BoardDTO> bCheckList(SearchCriteria cri) {
+		return mapper.bCheckList(cri);
+	}
+
+	@Override
+	public int bCheckRowsCount(SearchCriteria cri) {
+		return mapper.bCheckRowsCount(cri);
 	}
 	
+	
+//	@Override
+//	public List<BoardDTO> bPageList(Criteria cri) {
+//		return mapper.bPageList(cri);
+//	}
+//	
+//	@Override
+//	public int totalRowsCount(Criteria cri) {
+//		return mapper.totalRowsCount(cri);
+//	}
+	
 	@Override
-	public int totalRowsCount(Criteria cri) {
-		return mapper.totalRowsCount(cri);
+	public List<BoardDTO> bPageList(SearchCriteria cri) {
+		return mapper.bSearchList(cri);
+	}
+
+	@Override
+	public int totalRowsCount(SearchCriteria cri) {
+		return mapper.bSearchRowsCount(cri);
 	}
 	
 	
@@ -64,6 +85,12 @@ public class BoardServiceImpl implements BoardService {
 			return 1;
 		} else return 0;
 	}
+
+	
+
+	
+
+
 
 	
 	

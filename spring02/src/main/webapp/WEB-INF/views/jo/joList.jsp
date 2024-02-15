@@ -21,6 +21,7 @@
 			<th>조번호</th>
 			<th>조이름</th>
 			<th>조장</th>
+			<th>조장이름</th>
 			<th>Project</th>
 			<th>Slogan</th>
 		</tr>
@@ -30,6 +31,7 @@
 			<td><a href="joDetail?jo=${j.jno}">${j.jno}</a></td>
 			<td>${j.jname}</td>
 			<td>${j.captain}</td>
+			<td>${j.name}</td>
 			<td>${j.project}</td>
 			<td>${j.slogan}</td>
 		</tr>

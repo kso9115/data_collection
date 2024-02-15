@@ -14,8 +14,8 @@ import com.ncs.spring02.domain.BoardDTO;
 import com.ncs.spring02.service.BoardService;
 
 import lombok.AllArgsConstructor;
-import pageTest.Criteria;
 import pageTest.PageMaker;
+import pageTest.SearchCriteria;
 
 @Controller
 @AllArgsConstructor	// board service를 주입받기 위해서(autowired 대신 전체 필드 초기화하는 법)
@@ -24,7 +24,69 @@ public class BoardController {
 	
 	BoardService service;
 	
+	// CheckList
+	@GetMapping("/bCheckList")
+	public String bCheckList(Model model, SearchCriteria cri, PageMaker pageMaker) {
+		
+		// 1. 경로 설정
+		String uri = "board/bPageList";
+		
+		// 1) Criteria 처리
+		// 파라미터 값으로 전달했기 때문에 자동으로 데이터 들어감
+		// ver01: currPage, rowsPerPage 값들은 Parameter 로 전달되어 자동으로 cri에 set
+		// ver02: ver01 + searchType, keyword도 동일하게 cri set
+		
+		cri.setSnoEno();
+		
+		// 2) Service
+	    // => check 의 값을 선택하지 않은경우 check 값을 null 로 확실하게 해줘야함.
+		//    mapper 에서 명확하게 구분할수 있도록해야 정확한 저리가능 
+		if(cri.getCheck() !=null && cri.getCheck().length<1) {
+			cri.setCheck(null);
+		}
+		
+		model.addAttribute("blist", service.bCheckList(cri));
+		
+		// 3) View 처리 : PageMaker 사용
+		// => cri, totalRowsCount가 필요하다(Read from DB)
+		pageMaker.setCri(cri);
+		// 전체 갯수를 세기때문에 현재로는 매개변수 필요없으나, 추후 검색 시는 필요할 수 있음
+		pageMaker.setTotalRowsCount(service.bCheckRowsCount(cri)); 
+		model.addAttribute("pageMaker", pageMaker);
+		
+		return uri;
+	}
+	
 	// ** Board_Paging
+	// paging ver 02
+	@GetMapping("/bPageList")
+	public void bPageList(Model model, SearchCriteria cri, PageMaker pageMaker) {
+		// 1) Criteria 처리
+		// 파라미터 값으로 전달했기 때문에 자동으로 데이터 들어감
+		// ver01: currPage, rowsPerPage 값들은 Parameter 로 전달되어 자동으로 cri에 set
+		// ver02: ver01 + searchType, keyword도 동일하게 cri set
+		
+		cri.setSnoEno();
+		
+		// 2) Service
+		// => 출력 대상인 Rows를 select
+		// bPageList()는 페이지의 수를 출력해주기때문에 매개변수(인자)를 전달받아야한다
+		// => ver01, ver02 모두 같은 service 메서드 사용
+		//		mapper interface에서 사용하는 sql 구문만 교체해주면 된다
+		// 즉 BoardMapper.xml에 새로운 sql 구문 추가, BoardMapper.java interface수정
+		model.addAttribute("blist", service.bPageList(cri));
+		
+		// 3) View 처리 : PageMaker 사용
+		// => cri, totalRowsCount가 필요하다(Read from DB)
+		pageMaker.setCri(cri);
+		// 전체 갯수를 세기때문에 현재로는 매개변수 필요없으나, 추후 검색 시는 필요할 수 있음
+		pageMaker.setTotalRowsCount(service.totalRowsCount(cri)); 
+		model.addAttribute("pageMaker", pageMaker);
+	}
+	
+	
+	// paging ver 01
+/*	// ** Board_Paging
 	@GetMapping("/bPageList")
 	public void bPageList(Model model, Criteria cri, PageMaker pageMaker) {
 		// 1) Criteria 처리
@@ -43,8 +105,9 @@ public class BoardController {
 		// 전체 갯수를 세기때문에 현재로는 매개변수 필요없으나, 추후 검색 시는 필요할 수 있음
 		pageMaker.setTotalRowsCount(service.totalRowsCount(cri)); 
 		model.addAttribute("pageMaker", pageMaker);
-		
 	}
+	
+	*/
 	
 	// 1. Board List
 	@GetMapping("/boardList")
