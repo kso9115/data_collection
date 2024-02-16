@@ -2,10 +2,26 @@ package mapperInterface;
 
 import java.util.List;
 
+import com.ncs.spring02.domain.BoardDTO;
 import com.ncs.spring02.domain.MemberDTO;
+
+import pageTest.Criteria;
+import pageTest.SearchCriteria;
 
 public interface MemberMapper {
 	
+	// ** board Check_List
+	public List<BoardDTO> mCheckList(SearchCriteria cri);
+	public int mCheckRowsCount(SearchCriteria cri);
+	
+	// mPageList
+	List<MemberDTO> mPageList(Criteria cri);
+	public int mtotalRowsCount(Criteria cri);
+
+	// mSearchList
+	List<MemberDTO> mSearchList(SearchCriteria cri);
+	public int mSearchRowsCount(SearchCriteria cri);
+		
 	// selectList
 	List<MemberDTO> selectList();
 

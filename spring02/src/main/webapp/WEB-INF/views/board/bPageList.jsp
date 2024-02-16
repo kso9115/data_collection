@@ -21,11 +21,23 @@
 // 2) location 객체의 메서드
 // => href, replace('...'), reload() 
 function searchDB(){
-	self.location='bPageList'
+	/* 이전 searchDB */
+	/* self.location='bPageList'
 				+ '${pageMaker.makeQuery(1)}'
 				+ '&searchType='+document.getElementById('searchType').value
-				+ '&keyword='+document.getElementById('keyword').value;
+				+ '&keyword='+document.getElementById('keyword').value; */
+	
+	/* url 추가 */
+	self.location='bPageList'
+        /* +'${pageMaker.makeQuery(1)}'  
+           => 하나의 jsp 문서로 다양한 요청을 처리하기위해 쿼리스트링에 url 을 포함했기 때문에
+              첫 요청에서는  makeQuery 메서드 사용할수 없음 */
+        + '?currPage=1&rowsPerPage=5'
+        +'&searchType='+document.getElementById('searchType').value
+        +'&keyword='+document.getElementById('keyword').value;
 }//searchDB
+
+
 
 //2. searchType 을 '전체' 로 변경하면 keyword는 clear 
 function keywordClear(){
@@ -204,8 +216,12 @@ a:hover {
    		<a href="bPageList${pageMaker.makeQuery(pageMaker.spageNo-1)}">&LT;</a>&nbsp;&nbsp; --%>
 
 		<!-- ver02 : makeQuery를 searchQuery로 -->
-   		<a href="bPageList${pageMaker.searchQuery(1)}">FP</a>&nbsp;
-   		<a href="bPageList${pageMaker.searchQuery(pageMaker.spageNo-1)}">&LT;</a>&nbsp;&nbsp;
+   		<%-- <a href="bPageList${pageMaker.searchQuery(1)}">FP</a>&nbsp;
+   		<a href="bPageList${pageMaker.searchQuery(pageMaker.spageNo-1)}">&LT;</a>&nbsp;&nbsp; --%>
+
+		<!-- ver02 : makeQuery를 searchQuery로 + 메서드 내 url 추가 -->
+   		<a href="${pageMaker.searchQuery(1)}">FP</a>&nbsp;
+   		<a href="${pageMaker.searchQuery(pageMaker.spageNo-1)}">&LT;</a>&nbsp;&nbsp;
    	</c:when>
    	
    	<c:otherwise>
@@ -245,8 +261,12 @@ a:hover {
       		&nbsp;<a href="bPageList${pageMaker.makeQuery(pageMaker.lastPageNo)}">LP</a> --%>
       		
       		<!-- ver02 -->
-      		&nbsp;<a href="bPageList${pageMaker.searchQuery(pageMaker.epageNo+1)}">&GT;</a>
-      		&nbsp;<a href="bPageList${pageMaker.searchQuery(pageMaker.lastPageNo)}">LP</a>
+      		<%-- &nbsp;<a href="bPageList${pageMaker.searchQuery(pageMaker.epageNo+1)}">&GT;</a>
+      		&nbsp;<a href="bPageList${pageMaker.searchQuery(pageMaker.lastPageNo)}">LP</a> --%>
+
+      		<!-- ver02 메서드 내 url 추가 -->
+      		&nbsp;<a href="${pageMaker.searchQuery(pageMaker.epageNo+1)}">&GT;</a>
+      		&nbsp;<a href="${pageMaker.searchQuery(pageMaker.lastPageNo)}">LP</a>
       		
       	</c:when>
   	

@@ -49,6 +49,7 @@
 &nbsp;<a href="jo/joList">JList</a>&nbsp;
 &nbsp;<a href="board/boardList">BList</a>&nbsp;
 &nbsp;<a href="bcrypt">Bcrypt</a>&nbsp;	<!-- 복호화 암호화 테스트 01 -->
-&nbsp;<a href="board/bPageList">Bpage</a>&nbsp;	<!-- 페이징 테스트 -->
+&nbsp;<a href="board/bPageList">Bpage</a>&nbsp;	<!-- 페이징 테스트 : 글 목록-->
+&nbsp;<a href="member/mPageList">Mpage</a>&nbsp;	<!-- 페이징 테스트 : 멤버 목록-->
 </body>
 </html>

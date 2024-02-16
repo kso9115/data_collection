@@ -1,5 +1,6 @@
 package com.ncs.spring02.controller;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
@@ -24,12 +25,18 @@ public class BoardController {
 	
 	BoardService service;
 	
-	// CheckList
+	// Board CheckList
 	@GetMapping("/bCheckList")
-	public String bCheckList(Model model, SearchCriteria cri, PageMaker pageMaker) {
+	public String bCheckList(HttpServletRequest request, Model model, SearchCriteria cri, PageMaker pageMaker) {
 		
 		// 1. 경로 설정
 		String uri = "board/bPageList";
+		// 1-1. 요청명을 url에 포함하기 위한 작업
+		String mappingName = 
+				request.getRequestURI().substring(request.getRequestURI().lastIndexOf("/")+1);
+		System.out.println("=>RequestURI : "+request.getRequestURI());
+		// RequestURI : /spring02/board/bPageList
+		System.out.println("=>mappingName : "+mappingName);
 		
 		// 1) Criteria 처리
 		// 파라미터 값으로 전달했기 때문에 자동으로 데이터 들어감
@@ -50,6 +57,7 @@ public class BoardController {
 		// 3) View 처리 : PageMaker 사용
 		// => cri, totalRowsCount가 필요하다(Read from DB)
 		pageMaker.setCri(cri);
+		pageMaker.setMappingName(mappingName);	// mappingName을 객체에 담아주기
 		// 전체 갯수를 세기때문에 현재로는 매개변수 필요없으나, 추후 검색 시는 필요할 수 있음
 		pageMaker.setTotalRowsCount(service.bCheckRowsCount(cri)); 
 		model.addAttribute("pageMaker", pageMaker);
@@ -60,7 +68,12 @@ public class BoardController {
 	// ** Board_Paging
 	// paging ver 02
 	@GetMapping("/bPageList")
-	public void bPageList(Model model, SearchCriteria cri, PageMaker pageMaker) {
+	public void bPageList(HttpServletRequest request, Model model, SearchCriteria cri, PageMaker pageMaker) {
+		
+		// 1-1. 요청명을 url에 포함하기 위한 작업
+				String mappingName = 
+						request.getRequestURI().substring(request.getRequestURI().lastIndexOf("/")+1);
+				
 		// 1) Criteria 처리
 		// 파라미터 값으로 전달했기 때문에 자동으로 데이터 들어감
 		// ver01: currPage, rowsPerPage 값들은 Parameter 로 전달되어 자동으로 cri에 set
@@ -79,6 +92,7 @@ public class BoardController {
 		// 3) View 처리 : PageMaker 사용
 		// => cri, totalRowsCount가 필요하다(Read from DB)
 		pageMaker.setCri(cri);
+		pageMaker.setMappingName(mappingName);	// mappingName을 객체에 담아주기
 		// 전체 갯수를 세기때문에 현재로는 매개변수 필요없으나, 추후 검색 시는 필요할 수 있음
 		pageMaker.setTotalRowsCount(service.totalRowsCount(cri)); 
 		model.addAttribute("pageMaker", pageMaker);

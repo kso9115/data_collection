@@ -2,10 +2,29 @@ package com.ncs.spring02.service;
 
 import java.util.List;
 
+import com.ncs.spring02.domain.BoardDTO;
 import com.ncs.spring02.domain.MemberDTO;
+
+import pageTest.Criteria;
+import pageTest.SearchCriteria;
 
 public interface MemberService {
 
+	// ** board Check_List
+	public List<BoardDTO> mCheckList(SearchCriteria cri);
+	public int mCheckRowsCount(SearchCriteria cri);
+		
+	// mPageList
+	List<MemberDTO> mPageList(SearchCriteria cri);
+	public int mtotalRowsCount(SearchCriteria cri);
+
+	
+	// mSearchList
+	/*
+	 * List<MemberDTO> mSearchList(SearchCriteria cri); public int
+	 * mSearchRowsCount(SearchCriteria cri);
+	 */
+	
 	// selectList
 	List<MemberDTO> selectList();
 

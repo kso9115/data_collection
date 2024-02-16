@@ -197,6 +197,12 @@
          <version>1.2.4</version>
       </dependency>
       
+      <!-- => Test 추가 : Spring MVC Mybatis Test -->
+      <dependency>
+         <groupId>org.springframework</groupId>
+         <artifactId>spring-test</artifactId>
+         <version>${org.springframework-version}</version>
+      </dependency>
       
 	</dependencies>
     <build>

@@ -4,6 +4,88 @@
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="mapperInterface.MemberMapper">
 
+
+		<!-- CheckList -->
+	<select id="mCheckList" resultType="com.ncs.spring02.domain.MemberDTO"> 
+		select * from member
+		<if test="check!=null">
+		where jno in
+			<!-- ('','','') -->
+			<foreach collection="check" item="it" 
+			open="(" close=")" separator=",">
+				#{it}
+			</foreach>
+		</if>
+		
+		order by name asc
+		limit #{sno},#{rowPerPage}
+	
+	</select>	 
+
+	<select id="mCheckRowsCount" resultType="int"> 
+		select count(*) from member
+		<if test="check!=null">
+		where jno in
+			<!-- ('','','') -->
+			<foreach collection="check" item="it" 
+			open="(" close=")" separator=",">
+				#{it}
+			</foreach>
+		</if>
+	</select>	 
+	 
+	 
+	 <sql id="search">
+	 <!-- CONCAT('%',#{keyword},'%') 처리 -->
+	 	<if test="keyword!=null">
+	 		<bind name="keyval" value="'%'+keyword+'%'"/>
+	 	</if>
+	 	
+	 <!-- 2) Like 조건문 -->
+	 <choose>
+	 	<when test="searchType=='all' and keyword!=null">
+	 		<!-- id, title, content 에서 keyword 가 포함된 글 목록 -->
+	 		and ( id LIKE #{keyval}
+	 		OR name LIKE #{keyval}
+	 		OR info LIKE #{keyval}
+	 		OR rid LIKE #{keyval} ))
+	 	</when>
+
+
+	 	<when test="searchType!=null and keyword!=null">
+	 		<!-- searchType이 컬럼명인 경우 -->
+	 		and ${searchType} LIKE #{keyval})
+	 	</when>
+	 	<otherwise>)</otherwise>
+	 </choose>
+	 </sql>
+	 
+	 
+	 <select id="mSearchList" resultType="com.ncs.spring02.domain.MemberDTO">
+		select * from member
+		where ( id is Not NULL <include refid="search"></include>
+		limit #{sno}, #{rowPerPage} 
+	</select>
+	<!-- totalRowsCount :  -->
+	<select id="mSearchRowsCount" resultType="int">
+		select count(*) from member
+		where ( id is Not NULL <include refid="search"></include>
+	</select>
+
+	<!-- BoardPaging 
+		=> Mysql : Limit a,b(a개를 제외하고 b개를 가져옴 -> a+1부터 b개
+		=> Oracle : Between a AND b(a번째부터 b까지)-->
+		
+	<select id="mPageList" resultType="com.ncs.spring02.domain.MemberDTO">
+		select * from member 
+		order by name asc
+		limit #{sno},#{rowPerPage}
+	</select>
+	<!-- totalRowsCount :  -->
+	<select id="mtotalRowsCount" resultType="int">
+		select count(*) from member
+	</select>
+
 <!-- selectJoList -->
 <!-- 조 디테일 추가를 위해 member에서 추가 업데이트 -->
 	<select id="selectJoList" resultType="com.ncs.spring02.domain.MemberDTO">
