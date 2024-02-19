@@ -24,8 +24,10 @@ public class Ex03_DAOTest {
 	MemberDTO dto = new MemberDTO();
 	
 	// 1. Detail 정확성 Test
-//	@Test
+	@Test
 	public void detailTest() {
+		
+
 		String id="kso1";	// kso1 : true banana : false
 		id="banana";	// kso1 : true banana : false
 		dto=dao.selectOne(id);
@@ -34,7 +36,6 @@ public class Ex03_DAOTest {
 	}
 	
 	// 2. insert 정확성 Test
-	@Test
 	public void insertTest() {
 		dto.setId("junit");
 		dto.setPassword("1234!");

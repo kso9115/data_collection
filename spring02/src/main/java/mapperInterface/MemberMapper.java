@@ -2,6 +2,9 @@ package mapperInterface;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
+
 import com.ncs.spring02.domain.BoardDTO;
 import com.ncs.spring02.domain.MemberDTO;
 
@@ -9,6 +12,17 @@ import pageTest.Criteria;
 import pageTest.SearchCriteria;
 
 public interface MemberMapper {
+	
+	// ** JUnit TEST
+	// => selectDTO
+	// Mybatis와 참조형 매개변수 사용 비교를 위해
+	@Select("select * from member where id=#{id}")
+	MemberDTO selectDTO(MemberDTO dto);
+	
+	// selectParam
+	@Select("select * from member where id=#{ii} AND jno=#{jno}")
+	MemberDTO selectParam(@Param("ii") String id,@Param("jno") int jno);
+	
 	
 	// ** board Check_List
 	public List<BoardDTO> mCheckList(SearchCriteria cri);

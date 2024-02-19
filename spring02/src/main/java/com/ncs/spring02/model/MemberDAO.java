@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import com.ncs.spring02.domain.MemberDTO;
 
-
 //** DAO(Data Access Object)
 //=> SQL 구문 처리
 //=> CRUD 구현 
@@ -33,7 +32,7 @@ import com.ncs.spring02.domain.MemberDTO;
 @Repository
 public class MemberDAO {
 
-	// 1) 전역변수 정의 
+	// 1) 전역변수 정의
 	private static Connection cn = DBConnection.getConnection(); // 기본적으로 checked이기때문에 try~catch 예외처리 필수
 	private static Statement st;
 	private static PreparedStatement pst;
@@ -69,7 +68,6 @@ public class MemberDAO {
 					dto.setBirthday(rs.getString(8));
 					dto.setRid(rs.getString(9));
 					dto.setUploadfile(rs.getString(10));
-					
 
 					// 2. 객체 생성과 동시에 생성자를 통해 데이터를 기입해주기
 //					MemberDTO dto = new MemberDTO(rs.getString(1), rs.getString(2), rs.getInt(3), rs.getInt(4),
@@ -95,12 +93,12 @@ public class MemberDAO {
 	// arraylist 타입을 사용하면되므로 조상인 List를 선언
 	public List<MemberDTO> selectJoList(int jno) {
 		sql = "select * from member where jno = ?";
-		
+
 		// 조상 인터페이스 = 자손
 		// arrayList로 하지 않은 이유 : 코드의 유지보수를 위해서
 		// 우측의 ArrayList를 LinkedList로 변경이 용이하다
 		List<MemberDTO> list = new ArrayList<MemberDTO>();
-		
+
 		try {
 			pst = cn.prepareStatement(sql);
 			pst.setInt(1, jno);
@@ -119,15 +117,14 @@ public class MemberDAO {
 					dto.setPoint(rs.getDouble(7));
 					dto.setBirthday(rs.getString(8));
 					dto.setRid(rs.getString(9));
-					
-					
+
 					// 2. 객체 생성과 동시에 생성자를 통해 데이터를 기입해주기
 //					MemberDTO dto = new MemberDTO(rs.getString(1), rs.getString(2), rs.getInt(3), rs.getInt(4),
 //							rs.getInt(5), rs.getString(6), rs.getDouble(7), rs.getString(8), rs.getString(9));
-					
+
 					// 리스트에 dto를 넣어줘야함 > 값 초기화
 					list.add(dto);
-					
+
 				} while (rs.next());
 				return list;
 			} else {
@@ -165,12 +162,41 @@ public class MemberDAO {
 				return null;
 			}
 		} catch (Exception e) {
-			// TODO: handle exception
 			System.out.println("** selectOne Exception => " + e.toString());
 			return null;
 		}
 	}
-	
+
+	// ** JUnit Test
+	// 4) selectDTO
+	// => Mybatis 와 참조형 매개변수 사용 비교
+	public MemberDTO selectDTO(MemberDTO dto) {
+		sql = "SELECT * FROM member WHERE id=?";
+		try {
+			pst = cn.prepareStatement(sql);
+			pst.setString(1, dto.getId());
+			rs = pst.executeQuery();
+			if (rs.next()) {
+				dto.setId(rs.getString(1));
+				dto.setPassword(rs.getString(2));
+				dto.setName(rs.getString(3));
+				dto.setAge(rs.getInt(4));
+				dto.setJno(rs.getInt(5));
+				dto.setInfo(rs.getString(6));
+				dto.setPoint(rs.getDouble(7));
+				dto.setBirthday(rs.getString(8));
+				dto.setRid(rs.getString(9));
+				dto.setUploadfile(rs.getString(10));
+				return dto;
+			} else {
+				return null;
+			}
+		} catch (Exception e) {
+			System.out.println("** selectOne Exception => " + e.toString());
+			return null;
+		}
+	} // selectDTO
+
 	// 4) insert
 	// => 모든 컬럼 입력
 	public int insert(MemberDTO dto) {
@@ -216,7 +242,7 @@ public class MemberDAO {
 			pst.setString(8, dto.getUploadfile());
 			pst.setString(9, dto.getId());
 
-			if(pst.executeUpdate() > 0) {
+			if (pst.executeUpdate() > 0) {
 				return pst.executeUpdate();
 			} else {
 				System.out.println("** 데이터 업데이트 실패 **");
@@ -227,17 +253,16 @@ public class MemberDAO {
 			return 0;
 		}
 	}
-	
-	
+
 	// 5)-1 pwUpdate
 	public int pwUpdate(MemberDTO dto) {
 		sql = "update member set password=? where id=?";
-		
+
 		try {
 			pst = cn.prepareStatement(sql);
 			pst.setString(1, dto.getPassword());
 			pst.setString(2, dto.getId());
-			
+
 			return pst.executeUpdate();
 
 		} catch (Exception e) {
@@ -245,15 +270,14 @@ public class MemberDAO {
 			return 0;
 		}
 	}
-	
-	
+
 	// 6) delete
 	public int delete(String id) {
 		sql = "delete from member where id=?";
 		try {
 			pst = cn.prepareStatement(sql);
 			pst.setString(1, id);
-			
+
 			return pst.executeUpdate();
 
 		} catch (Exception e) {
