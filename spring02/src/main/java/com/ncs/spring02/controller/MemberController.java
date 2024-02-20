@@ -8,6 +8,8 @@ import java.io.IOException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -24,6 +26,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.ncs.spring02.domain.MemberDTO;
 import com.ncs.spring02.service.MemberService;
 
+import lombok.AllArgsConstructor;
+import lombok.extern.log4j.Log4j;
 import pageTest.PageMaker;
 import pageTest.SearchCriteria;
 
@@ -42,18 +46,33 @@ import pageTest.SearchCriteria;
 //=>  @Repository : DB 연동을 담당하는 DAO 클래스
 //    -> DB 연동과정에서 발생하는 예외를 변환 해주는 기능 추가
 
+@Log4j
 @Controller
 @RequestMapping(value = "/member") // /member 에 대한 부분을 모두 매핑하므로,
+@AllArgsConstructor	// @Autowired 대신 사용! : 모든 멤버변수를 생성하면서 초기화한다.
 public class MemberController {
-
-	@Autowired(required = false)
+	
+//	@Autowired(required = false)
 	MemberService service;
 
-	@Autowired
+//	@Autowired
 //	PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 	PasswordEncoder passwordEncoder;;
 	// new BCryptPasswordEncoder() 클래스를 만드는 작업을 해주어햐한다.
 	// root-context.xml에 bean 생성
+	
+	// Lombok 의 @Log4j Test
+	@GetMapping("/log4jTest")
+	public String log4jTest() {
+		String name="banana";
+		log.error("** Lombok @Log4j Test Error : name = "+name);
+		log.warn("** Lombok @Log4j Test WARN  : name = "+name);
+		log.info("** Lombok @Log4j Test INFO : name = "+name);
+		log.debug("** Lombok @Log4j Test DEBUG : name = "+name);
+		log.trace("** Lombok @Log4j Test TRACE : name = "+name);
+		
+		return "redirect:/";	// home으로 연경
+	}
 
 	// ID 중복 확인
 	@GetMapping("/idDupCheck")
@@ -277,10 +296,6 @@ public class MemberController {
 			realPath = "E:\\ksoo\\gitANDeclipse\\spring02\\src\\main\\webapp\\resources\\uploadImages\\"; // 현재 파일의 경로
 		else
 			realPath = "E:\\ksoo\\IDESet\\apache-tomcat-9.0.85\\webapps\\spring02\\resources\\uploadImages\\"; // 배포 후
-																												// 서버에
-																												// 저장되는
-																												// 경로 =>
-																												// 모두
 
 		// 1.3) 폴더 만들기 : 폴더 자체가 존재하지 않을수도 있다는 경우를 가정(uploadImages)
 		// => File type 객체 생성 : new File("경로");
@@ -340,6 +355,26 @@ public class MemberController {
 
 		dto.setUploadfile(file2);
 
+		
+	   // ** *****************************************
+	   // ** Transaction_AOP 적용 ********************* 
+	   // 1. 준비: pom.xml (dependency) 확인
+	   // =>  AspectJ(기본제공), AspectJ Weaver(추가)
+	     
+	   // 2. servlet-context.xml AOP 설정
+	     
+	   // 3. Rollback Test
+	   // 3.1) Aop xml 적용전 => insert1 은 입력되고, insert2 에서  500_Dupl..Key  오류 발생
+	   // 3.2) Aop xml 적용후 => insert2 에서 오류발생시 모두 Rollback 되어 insert1, insert2 모두 입력 안됨 
+	      
+	   // 3.1) Transaction 적용전 : 동일자료 2번 insert
+	   // => 첫번째는 입력완료(commit) 되고, 두번째자료 입력시 Key중복 오류발생 (500 발생)
+	   // 3.2) Transaction 적용후 : 동일자료 2번 insert
+	   // => 첫번째는 입력완료 되고, 두번째 자료입력시 Key중복 오류발생 하지만,
+	   //    rollback 되어 둘다 입력 안됨
+	   // service.insert(dto); // Transaction_Test, insert1 
+		
+		
 		// 2. 서비스 처리 & 결과
 		// => PasswordEncoder 적용 : 입력받은 비밀번호값을 인코딩한 후 db의 비밀번호에 저장해주기
 		dto.setPassword(passwordEncoder.encode(dto.getPassword()));

@@ -53,4 +53,6 @@ id="WebApp_ID" version="4.0">
    		<exception-type>java.lang.ArithmeticException</exception-type>
    		<location>/jsp04_Exception/ex03_Arith.jsp</location>
    </error-page>
+   
+ 
 </web-app>
