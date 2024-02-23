@@ -51,7 +51,7 @@
 <span>|</span>
 &nbsp;<a href="board/bPageList">Bpage</a>&nbsp;	<!-- 페이징 테스트 : 글 목록-->
 &nbsp;<a href="member/mPageList">Mpage</a>&nbsp;	<!-- 페이징 테스트 : 멤버 목록-->
-&nbsp;<a href="axtestform">Ajaxtest</a>&nbsp;	<!--Ajax 테스트 -->
+&nbsp;<a href="/axtestform">Ajaxtest</a>&nbsp;	<!--Ajax 테스트 -->
 
 
 </body>

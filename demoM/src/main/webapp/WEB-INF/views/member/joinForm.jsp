@@ -259,7 +259,7 @@ onload=function(){
 -->
 
 
-	<form action="join" method="post" enctype="multipart/form-data">
+	<form action="join" method="post" id="myform" enctype="multipart/form-data">
 		<table>
 			<tr height="40">
 				<td><label for="id">ID</label></td>
@@ -375,6 +375,8 @@ onload=function(){
 		<input type="submit" value="회원가입" size="5" id="submitTag"
 					onclick="return inCheck()" disabled>
 		<input type="reset" value="취소" size="5">
+		<!-- axios -->
+		<span class="textlink" onclick="axiJoin()">axiJoin</span>
 		</div>
 	</form>
 	&nbsp;

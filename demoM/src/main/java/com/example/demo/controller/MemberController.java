@@ -8,6 +8,7 @@ import java.io.IOException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -54,6 +55,15 @@ public class MemberController {
 
 	PasswordEncoder passwordEncoder;;
 	JoService jservice;
+	
+	// axiMemberList
+	@GetMapping(value="/aximlist")
+	public String axiMemberList(Model model) {
+		model.addAttribute("mlist", service.selectList());
+		log.info("rsjoin HttpStatus.OK" + HttpStatus.OK);
+		
+		return "axTest/axMemberList";
+	}
 	
 	// ID 중복 확인
 	@GetMapping("/idDupCheck")
