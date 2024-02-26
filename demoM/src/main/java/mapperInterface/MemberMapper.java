@@ -13,6 +13,11 @@ import pageTest.SearchCriteria;
 
 public interface MemberMapper {
 	
+	// ** Ajax Test
+//	@Delete("delete from member where id = #{id}")
+//	int delete(String id);
+	
+	
 	// ** JUnit TEST
 	// => selectDTO
 	// Mybatis와 참조형 매개변수 사용 비교를 위해
@@ -53,7 +58,6 @@ public interface MemberMapper {
 
 	// pwUpdate
 	int pwUpdate(MemberDTO dto);
-	
 	
 	// delete
 	int delete(String id);

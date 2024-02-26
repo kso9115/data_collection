@@ -1,4 +1,4 @@
-/*	axTest01.js */
+/* axTest01.js : rsLogin , rsLoginjj */
 
 /* ** Ajax_REST API Login Test **
  1. fetch
@@ -82,7 +82,8 @@ function rsLogin() {
                 //     .then절(1단계) 에서 수동으로 HTTP 에러를 처리함.
                 //     그러나 axios는 상태코드가 2xx의 범위를 넘어가면 거부(reject)함.
                 return response.text();
-                // Type 별로 
+                // 서버에서 Text 형식으로 보냈으므로 text() 메서드 사용
+                // Type 별로 Body-reading method를 적용함
         }).then(responseData => {
                 // ** then 2 단계
                 // fetch에서 response에 담아온 정보들을 2차적으로 확인

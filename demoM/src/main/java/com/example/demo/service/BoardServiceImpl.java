@@ -18,6 +18,12 @@ public class BoardServiceImpl implements BoardService {
 	
 	@Autowired
 	BoardMapper mapper;
+	
+	// ** Ajax : ID별 boardList 출력하기
+	@Override
+	public List<BoardDTO> idbList(String id) {
+		return mapper.idbList(id);
+	}
 
 	// ** board Check_List
 	@Override
@@ -89,6 +95,8 @@ public class BoardServiceImpl implements BoardService {
 			return 1;
 		} else return 0;
 	}
+
+	
 
 	
 

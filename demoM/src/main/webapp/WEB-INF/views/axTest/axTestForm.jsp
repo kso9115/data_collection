@@ -26,6 +26,7 @@
 <!-- 서버에서 가져오는 것이 아 -->
 &nbsp;<span class="textlink" onclick="rsJoinf()">rsJoin</span>&nbsp;
 &nbsp;<span class="textlink" onclick="axiMList()">axiMList</span>&nbsp;	
+&nbsp;<span class="textlink" onclick="axiMListCri('axmcri')">axiMListCri</span>&nbsp; 
 &nbsp;<a href="/home" >[Home]</a>  
 <hr>
 <div id="resultArea1"></div>

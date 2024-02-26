@@ -56,6 +56,45 @@ public class MemberController {
 	PasswordEncoder passwordEncoder;;
 	JoService jservice;
 	
+	// axmPageList 출력 : 검색기능
+	// ver01 : axmcri만 구현 ⇒ 서치기능만 포함
+	// ver02 : "/axmcri","/axmcheck" ⇒ 복수의 기능 처리
+	//			=> mappingName 에 "check" 포함되어 있는 경우 service 중 아래의 메서드를 호출
+	//			=> service.mCheckList(cri), mCheckRowsCount(cri) 호출
+	@GetMapping(value={"/axmcri","/axmcheck"})
+	public String axmcri(HttpServletRequest request, Model model, 
+						SearchCriteria cri, PageMaker pageMaker) {
+		
+		// 1) Criteria 처리
+		// => currPage, rowsPerPage 값들은 Parameter로 전달되어 자동으로 cri에 set
+		cri.setSnoEno();	// sno 계산 완료됨 -> service 처리
+		
+		// 2) 요청 확인 Service 처리
+		String mappingName = 
+				request.getRequestURI().substring(request.getRequestURI().lastIndexOf("/")+1);
+		pageMaker.setMappingName(mappingName);
+		pageMaker.setCri(cri);
+
+		if(mappingName.contains("check")) {
+			// Check 조건처리
+			model.addAttribute("mlist", service.mCheckList(cri));
+			pageMaker.setTotalRowsCount(service.mCheckRowsCount(cri));
+		} else {
+			// Search 조건처리
+			model.addAttribute("mlist", service.mPageList(cri));
+			pageMaker.setTotalRowsCount(service.mtotalRowsCount(cri));
+		}
+			
+		// 3) View 처리 : PageMaker 필요
+		model.addAttribute("pageMaker", pageMaker);
+		
+		System.out.println(model);
+		System.out.println(pageMaker);
+		return "axTest/axmPageList";
+	}
+	
+	
+	
 	// axiMemberList
 	@GetMapping(value="/aximlist")
 	public String axiMemberList(Model model) {
@@ -96,7 +135,6 @@ public class MemberController {
 		// 1-1. 요청명을 url에 포함하기 위한 작업
 		String mappingName = 
 				request.getRequestURI().substring(request.getRequestURI().lastIndexOf("/")+1);
-		System.out.println("1");
 		
 		// 1) Criteria 처리
 		cri.setSnoEno();
@@ -104,7 +142,6 @@ public class MemberController {
 		// 2) Service
 		
 		model.addAttribute("mlist", service.mPageList(cri));
-		System.out.println("2");
 		
 		// 3) View 처리 : PageMaker 사용
 		pageMaker.setCri(cri);

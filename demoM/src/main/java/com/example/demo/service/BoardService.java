@@ -2,12 +2,15 @@ package com.example.demo.service;
 
 import java.util.List;
 
+
 import com.example.demo.domain.BoardDTO;
 
 import pageTest.SearchCriteria;
 
 public interface BoardService {
 	
+	// ** Ajax : ID별 boardList 출력하기
+	public List<BoardDTO> idbList(String id);
 	
 	// ** board Check_List
 	public List<BoardDTO> bCheckList(SearchCriteria cri);

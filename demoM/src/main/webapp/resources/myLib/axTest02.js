@@ -1,4 +1,4 @@
-/*	axTest02.js */
+/*	axTest02.js : axiJoin */
 
 
 /* ** Ajax_REST API Join Test **
