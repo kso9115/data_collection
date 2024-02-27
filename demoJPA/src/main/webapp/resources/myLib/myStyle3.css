@@ -1,0 +1,154 @@
+@charset "UTF-8";
+
+/* 폰트 */
+@import url('https://fonts.googleapis.com/css?family=Montserrat:400,800');
+
+/* Link Button 만들기 */
+.button {
+	width:140px; 
+	height:50px; 
+	background-color: aqua;
+	border: 10px solid lightgray; 
+	/* 단축속성: 두께 style color */
+	border-radius:20px; 
+	text-align: center;
+	}	
+/* button 에 속해있는 모든 aTag */
+.button a { line-height:50px; }
+	
+/* 모든 a Tag */	
+a { color: Gray; text-decoration: none; font-weight:bold; } 
+a:hover { color:DimGray;  cursor:pointer; }
+a:active { color:Blue; }
+
+/* Error Message */
+.eMessage {
+	color: red;
+	font-size: x-small; 
+	font-style: italic;
+}
+ Span MenuLink
+.textlink { color:Blue; font-weight:bold; }
+.textlink:hover { 
+	color:DeepSkyBlue; 
+	font-size:1.2em; 
+	font-weight:bold;
+	cursor:pointer;
+}
+
+/* Ajax_jsonView BoardList Test3. 
+=> .content : span , #content : div
+=> div 초기값 : 화면표시X, 좌표기준, 글내용은 무조건 표시  */
+
+.content { color: Teal; background: AliceBlue; }
+#content {
+	display:none;
+	position:absolute;
+	z-index:100;
+	width:300px;
+	height:70px; 
+	color: SaddleBrown;
+	background: Beige;
+}
+ Check  List searchBar
+#searchBar {
+	color:DimGray ; font-family:돋움; font-size:14px;
+	float: left;
+}
+
+/* ============================================================================= */
+
+table {
+    margin-left:auto; 
+    margin-right:auto;
+}
+
+h1 {
+  font-weight: bold;
+  margin: 0;
+}
+
+h2 {
+  text-align: center;
+}
+h3 {
+  text-align: center;
+}
+
+input {
+  text-align: center;
+  background-color: #eee;
+  border: none;
+  padding: 12px 15px;
+  margin: 8px 0;
+  width: 250px;
+}
+
+div{
+	display: flex;
+	width: 250px;
+	padding : 10px;
+	
+}
+div:first-child{
+	display: flex;
+}
+div:nth-child(2){
+	display: flex;
+}
+
+button:active {
+  transform: scale(0.95);
+}
+
+tr{
+	margin-left: auto;
+	margin-right: auto;
+}
+
+submitTr{
+	display: flex;
+	flex-direction: column;
+}
+
+td {
+  font-size: 14px;
+  font-weight: 100;
+  line-height: 20px;
+  letter-spacing: 0.5px;
+  margin: 20px 0 30px;
+}
+
+span {
+  font-size: 12px;
+}
+
+table {
+  border-collapse: collapse;
+  width: 500px;
+  margin: 1rem auto;
+  border: 1px solid #ddd;
+  background-color: white;
+}
+th, td {
+  padding: 8px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+  /* text-align: center; */
+}
+th {
+  background-color: #1b1b1b;
+  color: #ddd;
+}
+tbody tr:hover {
+  background-color: #d3d3d3;
+  opacity: 0.9;
+  cursor: pointer;
+}
+a {
+  color: inherit;
+  text-decoration: none;
+}
+a:hover {
+  color: red;
+}

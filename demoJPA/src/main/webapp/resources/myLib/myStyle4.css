@@ -1,0 +1,132 @@
+@charset "UTF-8";
+@import url('https://fonts.googleapis.com/css2?family=Diphylleia&display=swap');
+
+*{
+	font-family: 'Diphylleia', serif;
+	font-size: 18px;
+}
+
+table {
+  border-collapse: collapse;
+  width: 500px;
+  margin: 1rem auto;
+  border: 1px solid #ddd;
+  background-color: white;
+}
+th, td {
+  padding: 8px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+  /* text-align: center; */
+}
+th {
+  background-color: #1b1b1b;
+  color: #ddd;
+}
+tbody tr:hover {
+  background-color: #d3d3d3;
+  opacity: 0.9;
+}
+a {
+  color: inherit;
+  text-decoration: none;
+}
+a:hover {
+  color: red;
+}
+
+textarea {
+    padding: 10px;
+    max-width: 100%;
+    line-height: 1.5;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    box-shadow: 1px 1px 1px #999;
+}
+
+input {
+    width: 150px;
+    height: 25px;
+    font-size: 12px;
+    border: 0;
+    border-radius: 15px;
+    outline: none;
+    padding-left: 10px;
+    background-color: rgb(233, 233, 233);
+}
+
+textarea {
+    width: 400px;
+    height: 200px;
+    font-size: 15px;
+    border: 0;
+    border-radius: 15px;
+    outline: none;
+    padding-left: 10px;
+    background-color: rgb(233, 233, 233);
+}
+
+.gray{
+	background: #d3d3d3;
+}
+
+/* Error Message */
+.eMessage {
+	color: red;
+	font-size: x-small; 
+	font-style: italic;
+}
+
+/* Ajax_jsonView BoardList Test3. 
+=> .content : span , #content : div
+=> div 초기값 : 화면표시X, 좌표기준, 글내용은 무조건 표시  */
+
+.content { color: Teal; background: AliceBlue; }
+#content {
+	display:none;
+	position:absolute;
+	z-index:100;
+	width:300px;
+	height:70px; 
+	color: SaddleBrown;
+	background: Beige;
+}
+
+/* Check  List searchBar */
+#searchBar {
+	color:DimGray ; font-family:돋움; font-size:14px;
+	float: left;
+}
+
+/* //////////////////////// */
+/* Link Button 만들기 */
+/* .button {
+	width:140px; height:50px; background-color: aqua;
+	border: 10px solid lightgray; 단축속성: 두께 style color
+	border-radius:20px; text-align: center;
+	}	
+button 에 속해있는 모든 aTag
+.button a { line-height:50px; }
+	
+모든 a Tag	
+a { color: Gray; text-decoration: none; font-weight:bold; } 
+a:hover { color:DimGray; font-size:1.2em; cursor:pointer; }
+a:active { color:Blue; }
+
+Error Message
+.eMessage {
+	color: red;
+	font-size: x-small; 
+	font-style: italic;
+}
+ Span MenuLink
+.textlink { color:Blue; font-weight:bold; }
+.textlink:hover { 
+	color:DeepSkyBlue; 
+	font-size:1.2em; 
+	font-weight:bold;
+	cursor:pointer;
+}
+
+
+ */
