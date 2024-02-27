@@ -461,7 +461,7 @@ public class RESTController {
 			result = ResponseEntity.status(HttpStatus.OK).body(list);
 			log.info("** idblist HttpStatus.OK"+HttpStatus.OK);
 		} else {
-			result = ResponseEntity.status(HttpStatus.BAD_GATEWAY).body("출력할 자료가 업슴당~!");
+			result = ResponseEntity.status(HttpStatus.BAD_GATEWAY).body("idblist 출력할 자료가 업슴당~!");
 			log.info("** idblist HttpStatus.BAD_GATEWAY"+HttpStatus.BAD_GATEWAY);
 		}
 		return result;
@@ -479,5 +479,27 @@ public class RESTController {
 			log.info("** axidelete HttpStatus.BAD_GATEWAY"+HttpStatus.BAD_GATEWAY);
 			return new ResponseEntity<String>("** 삭제에 실패하였습니다.",HttpStatus.BAD_GATEWAY);
 		}
+	}
+	
+	// 6) showJoDetail 과 hideJoDetail 처리(joDetail 출력)
+	@GetMapping("/jodetail/{jno}")
+	public ResponseEntity<?> jodetail(@PathVariable("jno") int jno, JoDTO dto) {
+
+		// => dto 확인 : parameter와 같은 이름의 멤버변수가 있으면 자동으로 set
+		System.out.println("** jodetail dto =>"+dto);
+		ResponseEntity<?> result = null;
+		
+		// service 처리
+		dto = jservice.selectOne(jno);
+		System.out.println("** jodetail dto22 =>"+dto);
+		if(dto!=null) {
+			result = ResponseEntity.status(HttpStatus.OK).body(dto);
+			log.info("** jodetail HttpStatus.OK"+HttpStatus.OK);
+		} else {
+			result = ResponseEntity.status(HttpStatus.BAD_GATEWAY).body("jodetail의 출력할 자료가 업슴당~!");
+			log.info("** jodetail HttpStatus.BAD_GATEWAY"+HttpStatus.BAD_GATEWAY);
+		}
+		
+		return result;
 	}
 }

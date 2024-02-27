@@ -168,7 +168,35 @@ function idbList(id) {
 // => 요청 : "/rest/axidelete/" PathVariable 적용
 // => Response 결과 => 성공 혹은 실패 여부만 전달하면 된다 : RESTController 사용
 // => 성공했을 시 deleted 로 변경, onclick 이벤트 해제(다시 선택할 수 없게끔)
-function axiDelete(id){
+
+// function axiDelete(id){
+// 	let url = "/rest/axidelete/"+id;
+
+// 	axios.delete(url
+// 	).then(response => {
+// 		alert(response.data);
+// 		// 삭제 성공
+// 		// Delete -> Deleted, Gray_color, Bold로
+// 		// onclick 이벤트 해제
+// 		// style 제거
+// 		document.getElementById(id).innerHTML="Deleted";
+// 		document.getElementById(id).style.color="Gray";
+// 		document.getElementById(id).style.fontWeight="bold";
+// 		document.getElementById(id).classList.remove('textlink');
+// 		document.getElementById(id).removeAttribute('onclick');
+
+
+// 	}).catch(err => {
+// 		if(err.response.status=='502'){
+// 			alert(err.response.data);
+// 		} else alert("** 시스템 오류, 잠시 후 다시 하세요 => "+err.message);
+// 	})
+// }
+
+// event 객체 적용하기
+// => document.getElementById(id) 대신해서 
+// e.target으로 이벤트 발생 대상에 대한 인식이 가능해진다
+function axiDelete(e,id){
 	let url = "/rest/axidelete/"+id;
 
 	axios.delete(url
@@ -178,7 +206,10 @@ function axiDelete(id){
 		// Delete -> Deleted, Gray_color, Bold로
 		// onclick 이벤트 해제
 		// style 제거
-		document.getElementById(id).innerHTML="Deleted";
+
+		// document.getElementById(id).innerHTML="Deleted";
+		// => e.target 적용
+		e.target.innerHTML="Deleted";
 		document.getElementById(id).style.color="Gray";
 		document.getElementById(id).style.fontWeight="bold";
 		document.getElementById(id).classList.remove('textlink');
@@ -190,6 +221,68 @@ function axiDelete(id){
 			alert(err.response.data);
 		} else alert("** 시스템 오류, 잠시 후 다시 하세요 => "+err.message);
 	})
-
 }
 
+// 2-3) JoDetail
+// 2-3-1) MouseOver : showJoDetail(event,${m.jno})
+// => jno mouseover : JoDetail content를 Div 에 출력하기
+// => request : axios, get, RESTController에 "/jodetail" 요청
+// => response : 성공 시 JoDTO 객체를 전달
+function showJoDetail(e,jno){
+	// ** 마우스포인터 위치 확인
+	// => 이벤트객체 활용
+	//     	- event객체 (이벤트핸들러 첫번째 매개변수) 가 제공
+   	//		- event객체 프로퍼티: type, target, preventDefault() 등 (JS 9장_Event.pptx 28p)   
+   	//		- e.pageX, e.pageY : 전체 Page 기준
+   	//     	- e.clientX, e.clientY : 보여지는 화면 기준-> page Scroll 시에 불편함
+	
+	console.log(`** e.pageX=${e.pageX}, e.pageY=${e.pageY}`);
+	console.log(`** e.clientX=${e.clientX}, e.clientY=${e.clientY}`);
+
+	let url="/rest/jodetail/"+jno;
+	let mleft = e.pageX+20;
+	let mtop = e.pageY;
+	axios.get(url
+	).then(response => {
+		console.log(`** showJoDetail response 성공 => ${response.data}`);
+
+		// // ** JSON.stringify 적용 비교
+		// let jj =JSON.stringify(response.data);   
+		// // => Object -> JSON : Data를 나열해줌 
+		// // => JS 객체포맷을 JSON 포맷화 하면 key:value 형태로 나열해줌
+		// //    (즉, 하나의 긴문자열, 문자Type 이됨)
+		// //    console.log 로 response.data 의 내용을 확인할때 사용하면 편리함.  
+		// console.log(`** response 성공: JSON포맷 => ${jj}`);
+
+
+		let jo = response.data;
+		console.log("** Data : jo.jno => "+jo.jno);
+		let resultHtml=`
+		<table style="width: 100%">
+		<tr height="10"><td>Jno</td><td>${jo.jno}</td></tr>
+		<tr height="10"><td>Jname</td><td>${jo.jname}</td></tr>
+		<tr height="10"><td>captain</td><td>${jo.captain}</td></tr>
+		<tr height="10"><td>Project</td><td>${jo.project}</td></tr>
+		<tr height="10"><td>Slogan</td><td>${jo.slogan}</td></tr>
+		</table>`;
+
+		document.getElementById('content').innerHTML=resultHtml;
+		document.getElementById('content').style.display='block';
+		document.getElementById('content').style.left=mleft+"px";
+		document.getElementById('content').style.top=mtop+"px";
+
+
+	
+	}).catch(err => {
+		if(err.response.status=='502'){
+			alert(err.response.data);
+		} else alert("** 시스템 오류, 잠시 후 다시 하세요 => "+err.message);
+	});
+}//showJoDetail
+
+
+// 2-3-2) MouseOut : hideJoDetail()
+// => 화면에 표시되어 있던 content Div가 사라짐
+function hideJoDetail(){
+	document.getElementById('content').style.display='none';
+}//hideJoDetail
