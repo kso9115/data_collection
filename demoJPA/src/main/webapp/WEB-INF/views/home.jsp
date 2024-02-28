@@ -51,8 +51,13 @@
 <span>|</span>
 &nbsp;<a href="board/bPageList">Bpage</a>&nbsp;	<!-- 페이징 테스트 : 글 목록-->
 &nbsp;<a href="member/mPageList">Mpage</a>&nbsp;	<!-- 페이징 테스트 : 멤버 목록-->
-&nbsp;<a href="/axtestform">Ajaxtest</a>&nbsp;	<!--Ajax 테스트 -->
-
+&nbsp;<a href="/axtestform">Ajaxtest</a>&nbsp;<br>	<!--Ajax 테스트 -->
+&nbsp;<a href="/ginsert">Ginsert</a>&nbsp; <!-- JPA 방명록 테스트  -->
+&nbsp;<a href="/glist">GList</a>&nbsp; <!-- JPA 방명록 테스트  -->
+&nbsp;<a href="/gupdate">GUpdate</a>&nbsp; <!-- JPA 방명록 테스트  -->
+&nbsp;<a href="/gdetail">GDetail</a>&nbsp; <!-- JPA 방명록 테스트  -->
+&nbsp;<a href="/gdelete">GDelete</a>&nbsp; <!-- JPA 방명록 테스트  -->
+&nbsp;<a href="/gpage">GPage</a>&nbsp; <!-- JPA 페이징 테스트  -->
 
 </body>
 </html>
