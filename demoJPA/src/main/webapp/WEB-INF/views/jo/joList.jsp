@@ -28,7 +28,7 @@
 <c:if test="${!empty requestScope.joList}">
 	<c:forEach var="j" items="${requestScope.joList}">
 		<tr >
-			<td><a href="joDetail?jo=${j.jno}">${j.jno}</a></td>
+			<td><a href="joDetail?jCode=D&jo=${j.jno}">${j.jno}</a></td>
 			<td>${j.jname}</td>
 			<td>${j.captain}</td>
 			<td>${j.name}</td>
@@ -49,5 +49,6 @@
 &nbsp;<a href="/home">HOME</a>&nbsp;
 &nbsp;<a href='javascript:history.go(-1)'>이전으로</a>&nbsp;
 &nbsp;<a href="joinsertForm">새로운 조 등록하기</a>&nbsp;
+
 </body>
 </html>

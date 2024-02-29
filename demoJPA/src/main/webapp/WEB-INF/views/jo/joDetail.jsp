@@ -69,8 +69,8 @@
 			<th>추천인</th>
 		</tr>
 		
-	<c:if test="${!empty requestScope.jolist}">
-		<c:forEach var="l" items="${requestScope.jolist}">
+	<c:if test="${!empty requestScope.joList}">
+		<c:forEach var="l" items="${requestScope.joList}">
 		<tr bgcolor="LightCyan">
 			<td>${l.id}</td>
 			<%-- <td>${l.password}</td> --%>
@@ -88,8 +88,8 @@
 
 &nbsp;<a href="/home">Home</a>&nbsp;
 &nbsp;<a href='javascript:history.go(-1)'>이전으로</a>&nbsp;
-&nbsp;<a href="joDetail?jo=1${d.jno}">수정하기</a>&nbsp;
-&nbsp;<a href="joDetail?jo=2${d.jno}">탈퇴하기</a>&nbsp;
+&nbsp;<a href="joDetail?jCode=U&jo=${d.jno}">수정하기</a>&nbsp;
+&nbsp;<a href="/jo/delete?jo=${d.jno}">탈퇴하기</a>&nbsp;
 
 </body>
 </html>

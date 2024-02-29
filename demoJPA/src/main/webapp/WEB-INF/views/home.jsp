@@ -16,7 +16,7 @@
 
 <br>
 <c:if test="${!empty sessionScope.loginName}">
-<img alt="mainImage" src="/resources/images/md2.png">
+<img alt="mainImage" src="/resources/images/md2.jpg">
 	<h3>${sessionScope.loginName}님 안녕하세요 ʕ´•ᴥ•`ʔก็็็็็็็็็็็็็ʕ•͡ᴥ•ʔ ก้้้้้้้้้้้</h3>
 </c:if>
 <c:if test="${empty sessionScope.loginID}">
@@ -47,7 +47,9 @@
 <span>|</span>
 &nbsp;<a href="member/memberList">MList</a>&nbsp;
 &nbsp;<a href="jo/joList">JList</a>&nbsp;
+&nbsp;<a href="member/mjoinList">mJoinList</a>&nbsp; <!-- mjoinList : member와 jo의 join을 통해 조장 이름 출력 -->
 &nbsp;<a href="board/boardList">BList</a>&nbsp;
+
 <span>|</span>
 &nbsp;<a href="board/bPageList">Bpage</a>&nbsp;	<!-- 페이징 테스트 : 글 목록-->
 &nbsp;<a href="member/mPageList">Mpage</a>&nbsp;	<!-- 페이징 테스트 : 멤버 목록-->
@@ -58,6 +60,7 @@
 &nbsp;<a href="/gdetail">GDetail</a>&nbsp; <!-- JPA 방명록 테스트  -->
 &nbsp;<a href="/gdelete">GDelete</a>&nbsp; <!-- JPA 방명록 테스트  -->
 &nbsp;<a href="/gpage">GPage</a>&nbsp; <!-- JPA 페이징 테스트  -->
+
 
 </body>
 </html>

@@ -12,9 +12,9 @@ import lombok.NoArgsConstructor;
 public class JoDTO {
 	// 1) 멤버 변수 정의 : 오버라이딩?
 	private int jno;
-	private String jname;
+	protected String jname;
 	private String captain;
-	private String project;
+	protected String project;
 	private String slogan;
 	
 	private String name; // 조인을 위한 필드값 추가(롬복으로인해 게터세터필요없음)

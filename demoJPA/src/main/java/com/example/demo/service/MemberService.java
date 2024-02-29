@@ -2,49 +2,39 @@ package com.example.demo.service;
 
 import java.util.List;
 
-import com.example.demo.domain.BoardDTO;
-import com.example.demo.domain.MemberDTO;
+import org.springframework.data.repository.query.Param;
 
-import pageTest.SearchCriteria;
+import com.example.demo.domain.MemberDTO;
+import com.example.demo.entity.Member;
 
 public interface MemberService {
 
-	// ** board Check_List
-	public List<BoardDTO> mCheckList(SearchCriteria cri);
-	public int mCheckRowsCount(SearchCriteria cri);
-		
-	// mPageList
-	List<MemberDTO> mPageList(SearchCriteria cri);
-	public int mtotalRowsCount(SearchCriteria cri);
+	// DTO => Entity로 변경
 
-	
-	// mSearchList
-	/*
-	 * List<MemberDTO> mSearchList(SearchCriteria cri); public int
-	 * mSearchRowsCount(SearchCriteria cri);
-	 */
-	
 	// selectList
-	List<MemberDTO> selectList();
-
-	// 리스트 멤버 출력을 위한 서비스추가
-	List<MemberDTO> selectJoList(int jno);
+	List<Member> selectList();
 
 	// selectOne
-	MemberDTO selectOne(String id);
+	Member selectOne(String id);
 
-	// insert
-	int insert(MemberDTO dto);
-
-	// update
-	int update(MemberDTO dto);
+	// insert, update
+	Member save(Member entity);
 
 	// pwUpdate
-	int pwUpdate(MemberDTO dto);
-	
-	
-	// delete
-	int delete(String id);
-	
+	Member pwUpdate(Member entity);
 
+	// delete
+	void deleteById(String id);
+
+	// 1) JPARepository Method 규약
+	// => jno 별 Member 출력
+	List<Member> findByJno(int jno);
+
+	// 2) @Query선언을 이용한 직접쿼리 선언
+	// => password Update에 적용
+	public void updatePassword(@Param("id") String id, @Param("password") String password);
+	public void updatePassword2(@Param("id") String id, @Param("password") String password);
+	
+	// 3) Join 구문에 @Query 적용
+	List<MemberDTO> findMemberJoin();
 }
