@@ -15,13 +15,13 @@ import com.example.demo.entity.Member;
 //=> interface 계층도
 // Repository<T, ID> -> CrudRepository<T, ID> 
 //-> PagingAndSortingRepository<T, ID> -> JpaRepository<T, ID>
-
+//
 //=> CrudRepository<T, ID> : 기본기능만 사용하는 경우 상속받음
 //=> JpaRepository<T, ID> : JPA 관련기능 대부분 사용하는경우 상속받음
-
+//
 //=> 이들을 상속받는것만으로도 모든 처리가 됨.
 //=> Test Code 로 확인
-
+//
 //** JPA 의 CRUD 메서드
 //=> ~Repository 를 통해 JPA 의 EntityManager 에 접근됨.
 //=> EntityManager : 영속 계층에 접근하여 엔티티에 대한 DB 작업을 제공함.
@@ -35,11 +35,12 @@ import com.example.demo.entity.Member;
 //      있으면 update를 동작시키고, entity를 return.   
 //    - deleteById(키) 삭제의 경우에도 select 후 없으면 ~~DataAccessException 발생시키고
 //      있으면 삭제하고 void 로 정의되어 return값 없음. 
-
+//
 //=> JpaRepository의 save()메서드 동작원리
-//    - 새로운 entity이면 persist() 를 아니면 merge()를 호출
-// persist / merge => 엔티티 매니저에 있는 메서드 사용
-
+//    - 새로운 entity이면 EntityManager의 persist() 를 
+//		아니면 merge()를 호출 EntityManager merge( )를 호출
+// 		persist / merge => 엔티티 매니저에 있는 메서드 사용
+//
 // JpaRepository<T, ID> 제네릭임 => 엔티티의 타입을 알려주어야하기 때문에 t > entity id > primary의 타입
 
 // ===================================================================================================
@@ -113,9 +114,9 @@ import com.example.demo.entity.Member;
 
 //4) QueryDSL
 //=> Querydsl - 레퍼런스 문서
-//http://querydsl.com/static/querydsl/4.0.1/reference/ko-KR/html_single/
+//http:querydsl.com/static/querydsl/4.0.1/reference/ko-KR/html_single/
 //=> QueryDSL사용법.txt 메모장 참고
-
+//
 //=> 문자가 아닌 자바코드로 쿼리를 작성함으로 컴파일 시점에 오류를 찾을수 있다.
 //=> IDE의 자동완성 도움을 받을 수 있음.
 //=> 동적 쿼리를 작성하기 편리하다.
@@ -129,7 +130,7 @@ import com.example.demo.entity.Member;
 //( pom.xml 의 설정을 통해 자동실행,  QueryDSL사용법.txt 메모장 참고)    
 //- Q클래스 파일에 접근 해서 DB 작업
 //- QueryDSL로 쿼리를 작성할때 Q클래스를 사용함으로써쿼리를 Type-Safe하게 작성할 수 있음.
-
+//
 //=> 적용 MemberDSLRepository.java
 
 //5) JDBC API 직접 사용
@@ -196,7 +197,7 @@ public interface MemberRepository extends JpaRepository<Member, String> {
 			+ "ON m.jno=j.jno order by m.jno")
 	List<MemberDTO> findMemberJoin();
 
-	// 위의 쿼리구문을 NativeQuery
+	// 위의 쿼리구문을 NativeQuery :  DTO를 직접 사용하는 것은 불가능하다.
 //	@Query(nativeQuery = true, value = "SELECT m.id, m.name, m.jno, j.jname, j.project "
 //									+ "From member m "
 //									+ "LEFT JOIN "

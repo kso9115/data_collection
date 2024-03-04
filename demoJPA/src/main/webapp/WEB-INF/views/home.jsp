@@ -61,6 +61,12 @@
 &nbsp;<a href="/gdelete">GDelete</a>&nbsp; <!-- JPA 방명록 테스트  -->
 &nbsp;<a href="/gpage">GPage</a>&nbsp; <!-- JPA 페이징 테스트  -->
 
+<br>
+&nbsp;<a href="/tinsert">TSave</a>&nbsp; 
+&nbsp;<a href="/tupdate">TUpdate</a>&nbsp; 
+&nbsp;<a href="/tdupupdate">TDupUpdate</a>&nbsp; 
+&nbsp;<a href="/tcalcCount">TCalc</a>&nbsp; 
+&nbsp;<a href="/testlist">TList</a>&nbsp; 
 
 </body>
 </html>
