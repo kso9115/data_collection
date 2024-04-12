@@ -22,8 +22,13 @@ public class MemberServiceImpl implements MemberService {
 	private final MemberRepository repository;
 	private final MyRepositoryImpl emrepository;
 	private final MemberDSLRepositoryImpl dslrepository;
-	
-	
+
+	// ** 스프링시큐리티, JWT 인증
+	@Override
+	public Member getWithRoles(String id) {
+		return repository.getWithRoles(id);
+	}
+
 	// ver01 selectList : repository
 //	@Override
 //	public List<Member> selectList() {
@@ -46,11 +51,11 @@ public class MemberServiceImpl implements MemberService {
 //		else
 //			return null;
 //	}
-	
+
 	// ver02 selectOne : 엔티티 매니저 테스트 emrepository
 	@Override
 	public Member selectOne(String id) {
-		
+
 		return emrepository.emMemberDetail(id);
 	}
 
@@ -85,21 +90,27 @@ public class MemberServiceImpl implements MemberService {
 	public void updatePassword(String id, String password) {
 		repository.updatePassword(id, password);
 	}
+
 	@Override
 	public void updatePassword2(String id, String password) {
 		repository.updatePassword2(id, password);
 	}
-	
+
+	// ** Password Update
+	// => @Query 적용
+//	@Override
+//	public void updatePassword(String id, String password) {
+//		repository.updatePassword(id, password);
+//	}
+
 	// 3) Join 구문에 @Query 적용
 	@Override
-	   public List<MemberDTO> findMemberJoin() {
+	public List<MemberDTO> findMemberJoin() {
 		// @Query 적용
-	    // return repository.findMemberJoin();
+		// return repository.findMemberJoin();
 
 		// MemberDSLRepositoryImpl dslrepository 적용
 		return dslrepository.findMemberJoinDSL();
-	   }
-
-	
+	}
 
 }

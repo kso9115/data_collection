@@ -9,6 +9,9 @@ import com.example.demo.entity.Member;
 
 public interface MemberService {
 
+	// ** 스프링시큐리티, JWT 인증
+	Member getWithRoles(String id);
+
 
 	// DTO => Entity로 변경
 
@@ -30,6 +33,10 @@ public interface MemberService {
 	// 1) JPARepository Method 규약
 	// => jno 별 Member 출력
 	List<Member> findByJno(int jno);
+
+	// ** Password Update
+	// => @Query 적용
+//	void updatePassword(String id, String password);
 
 	// 2) @Query선언을 이용한 직접쿼리 선언
 	// => password Update에 적용

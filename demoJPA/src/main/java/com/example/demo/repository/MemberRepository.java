@@ -2,6 +2,7 @@ package com.example.demo.repository;
 
 import java.util.List;
 
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -190,16 +191,20 @@ public interface MemberRepository extends JpaRepository<Member, String> {
 
 	// 2.3) Join 구문에 @Query 적용
 	// => JPQL => Entity(DTO를 만들어서 사용)
-	@Query("SELECT new com.example.demo.domain.MemberDTO(m.id, m.name, m.jno, j.jname, j.project) "
-			+ "FROM Member m "
-			+ "LEFT JOIN "
-			+ "Jo j "
-			+ "ON m.jno=j.jno order by m.jno")
+	@Query("SELECT new com.example.demo.domain.MemberDTO(m.id, m.name, m.jno, j.jname, j.project) " + "FROM Member m "
+			+ "LEFT JOIN " + "Jo j " + "ON m.jno=j.jno order by m.jno")
 	List<MemberDTO> findMemberJoin();
 
-	// 위의 쿼리구문을 NativeQuery :  DTO를 직접 사용하는 것은 불가능하다.
+	// 위의 쿼리구문을 NativeQuery : DTO를 직접 사용하는 것은 불가능하다.
 //	@Query(nativeQuery = true, value = "SELECT m.id, m.name, m.jno, j.jname, j.project "
 //									+ "From member m "
 //									+ "LEFT JOIN "
 //									+ "jo j on m.jno=j.jno order by m.jno")
+
+	// ** Spring Security 인증기능 추가
+	@EntityGraph(attributePaths = { "roleList" })
+	// => "roleList": Member 엔티티의
+	// @ElementCollection(fetch = FetchType.LAZY) 로 정의한 속성
+	@Query("select m from Member m where m.id = :id")
+	Member getWithRoles(@Param("id") String id);
 }

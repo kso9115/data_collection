@@ -1,10 +1,12 @@
 package com.example.demo.jwtToken;
 
-import lombok.extern.slf4j.Slf4j;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
@@ -12,11 +14,19 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import com.example.demo.domain.MemberRole;
+import com.example.demo.entity.Member;
+import com.example.demo.repository.MemberRepository;
+
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 // ** 인증필터(AuthenticationFilter) 클래스 만들기 & 등록하기
 // => 등록: SecurityConfig.java 의 filterChain 메서드 참고
@@ -66,29 +76,32 @@ import java.io.IOException;
 // => endsWith() : 특정 문자열로 끝나는지 boolean 타입으로 리턴.
 // => a.equalsIgnoreCase(b) : a와 b가 똑같은지 확인하는 메서드이며, 대소문자 구분없이 비교함.
 
-@Slf4j  // @Log4j2 둘중선택
+@Log4j2
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
 	@Autowired
 	private TokenProvider tokenProvider;
+	@Autowired
+	private MemberRepository memberRepository;
 
-	// => doFilterInternal 메서드는 인증처리를 담당
-	@Override
-	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+	// ** doFilterInternal 메서드는 인증처리를 담당
+	
+	// 1. Role 을 token 에 포함하기전
+	//@Override
+	protected void doFilterInternal_OLD(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 		try {
 			// 1) request 에서 토큰 가져오기.
-			// request 헤더안에 토큰을 담아서 전달받음
 			String token = parseBearerToken(request);  //아래에 메서드 구현해놓음
-			log.info("** TokenProvider.java, doFilterInternal(), token 확인=> "+token);
+			log.info("** JwtAuthenticationFilter.java, doFilterInternal(), token 확인=> "+token);
 			
 			if (token != null && !token.equalsIgnoreCase("null")) {
 				
 				// 2) 토큰 검증 & userId 가져오기
-				//    JWT이므로 인가 서버에 요청 하지 않고도 검증 가능
-				//    TokenProvider 의 검증메서드를 통해 검증후 id 전달받음 (위조된 경우 예외처리 됨)
+				// => JWT이므로 Authorization(인가) 서버에 요청하지않고 검증가능함.
+				// => TokenProvider 의 검증메서드를 통해 검증후 id 전달받음 (위조된 경우 예외처리 됨)
 				String userId = tokenProvider.validateAndGetUserId(token);
-				log.info("Authenticated user ID : " + userId );
+				log.info("** Authenticated 결과 userId : " + userId );
 				
 				// 3) 인증 완료
 				// => 스프링시큐리티의 인증과정 ( https://ittrue.tistory.com/287 참고)
@@ -106,7 +119,47 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 				// => 생성자: UsernamePasswordAuthenticationToken(principal, credentials, authorities) 
 				//	- principal: 객체형, AuthenticationPrincipal(인증정보 or 인증본인) 이며 @AuthenticationPrincipal 로 제공받을수있음.
 				//	- credentials: 객체형, Password를 의미하며 보통은 null 로 처리
-				//	- authorities: Collection Type, 권한목록
+				//	- authorities: 권한목록, Collection<? extends GrantedAuthority> Type 
+				//					인증된 권한목록이므로 Collection 의 Type이 제한됨 	
+				/*	- 생성자 소스 참고
+					public UsernamePasswordAuthenticationToken(Object principal, Object credentials,
+							Collection<? extends GrantedAuthority> authorities) {
+						super(authorities);
+						this.principal = principal;
+						this.credentials = credentials;
+						super.setAuthenticated(true); // must use super, as we override
+					}
+				*/
+				
+				// ** AuthorityUtils
+				// => 스프링의 org.springframework.security.core.authority 패키지에 있는
+				//	  List<GrantedAuthority> 를 만들어 주는 유틸리티 클래스임.
+				//	  즉, Collection<? extends GrantedAuthority> getAuthorities() 메서드를 만들어줌.
+				//	( https://blog.naver.com/misschip/222059488541 참고 ) 
+				// => 방법	
+				//	1) commaSeparatedStringToAuthorityList() 
+				//		List<GrantedAuthorities> authorities =
+				//		AuthorityUtils.commaSeparatedStringToAuthorityList("ROLE_ADMIN,ROLE_USER");	
+				
+				//	2) createAuthorityList() 메서드를 쓰면 된다.
+				//​		List<GrantedAuthorities> authorities =
+				//		AuthorityUtils.createAuthorityList("ROLE_ADMIN","ROLE_MANAGER","ROLE_USER");
+				//		=> Role은 앞에 ROLE_ 을 붙여주어야 인식을 함. 
+				//			( SpringBoot 3.~~ 부터 변경됨, https://krksap.tistory.com/2194 )
+				
+				// ** authorities 가져와 스프링 시큐리티가 인가할수 있도록 
+				//	  	UsernamePasswordAuthenticationToken 생성자로 전달하기
+				// => authorities 가져오기
+				Member member = memberRepository.getWithRoles(userId);
+				log.info("** Authenticated getMemberRoleList => "+member.getRoleList());
+				// => List -> ROLE_USER 형식 String 으로 변환후 인자로 넣어주기만 하면 됨
+				String roleList ="";
+				for (MemberRole r : member.getRoleList()) {
+					roleList += ",ROLE_"+r;
+				}
+				roleList=roleList.substring(1); // 첫번째 "," 없애기 위함 
+				log.info("** Authenticated 완성된 roleList => "+roleList);
+				
 				AbstractAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
 								userId, 
 								// => 인증된 사용자정보, 모든 객체형 사용가능 
@@ -114,8 +167,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 								// => 컨트롤러에서 @AuthenticationPrincipal 로 제공받음
 								//	 (AuthController 의 userDetail() 에서 확인) 	
 								null, // Password를 의미하며 보통은 null 로 처리
-								AuthorityUtils.NO_AUTHORITIES // 권한없음
+								AuthorityUtils.commaSeparatedStringToAuthorityList(roleList) 
+								// => member.getMemberRoleList() 에서 읽은 권한목록을 인자값 형식에 맞게 전달
 				);
+				
 				authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 				// => details 필드에 인증 소스인 request 값 set 
 				
@@ -129,13 +184,66 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 				SecurityContextHolder.setContext(securityContext);
 			}
 		} catch (Exception ex) {
-			logger.error("Could not set user authentication in security context", ex);
+			log.error("Could not set user authentication in security context", ex);
 		}
 
 		filterChain.doFilter(request, response);
 
 	} //doFilterInternal
 	
+	// 2. Role을 token에 포함한 이후
+	@Override
+	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+		try {
+			// 1) request 에서 토큰 가져오기.
+			String token = parseBearerToken(request);  //아래에 메서드 구현해놓음
+			log.info("** JwtAuthenticationFilter.java, doFilterInternal(), token 확인=> "+token);
+			
+			if (token != null && !token.equalsIgnoreCase("null")) {
+				
+				// 2) 토큰 검증 & claims 가져오기
+				Map<String, Object> claims = tokenProvider.validateToken(token);
+				log.info("** Authenticated 결과 JWT claims: " + claims);
+				String userId = (String) claims.get("userId");
+				//String pw = (String) claims.get("pw");
+				List<String> roleList = (List<String>)claims.get("roleList");
+				
+				// 3) 인증 완료
+				// => 인증결과를 UsernamePasswordAuthenticationToken 에 담아 시큐리티가 사용하는 인증토큰을 만들고
+				// => 이 인증토큰 값(Authentication)을 SecurityContextHolder를 이용하여 SecurityContext에 등록
+				//	  ( SecurityContextHolder에 등록해야 인증된 user로 인식함)
+				
+				AbstractAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
+						userId, // 컨트롤러에서 @AuthenticationPrincipal 로 사용가능 (AuthController userDetail() 확인) 
+						null, // Password를 의미하며 보통은 null 로 처리
+						roleList.stream()
+								.map(str -> new SimpleGrantedAuthority("ROLE_"+str))
+								.collect(Collectors.toList()) );
+						// => Collection<? extends GrantedAuthority> Type 에 맞추기 위함
+				
+				//=> 아래의 경우처럼 객체를 생성자의 principal 로 전달할수도 있음  	
+				// MemberDTO memberDTO = new MemberDTO(userId, pw, ~~~ , roleNames);
+				// ~~~ = new UsernamePasswordAuthenticationToken(memberDTO, pw, memberDTO.getAuthorities());
+				
+				authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+				// => details 필드에 인증 소스인 request 값 set 
+				
+				// => SecurityContextHolder에 인증된 user등록.
+				//	  ( 그래야만 인증된 user로 인식함)
+				//	-> SecurityContext 생성
+				//	-> 여기에 인증정보를 넣고
+				//	-> 이렇게 인증정보를 담은 SecurityContext 를 SecurityContextHolder에 등록함.
+				SecurityContext securityContext = SecurityContextHolder.createEmptyContext();
+				securityContext.setAuthentication(authentication);
+				SecurityContextHolder.setContext(securityContext);
+			} //if_token 존재
+		} catch (Exception ex) {
+			log.error("Could not set user authentication in security context", ex);
+		}
+
+		filterChain.doFilter(request, response);
+
+	} //doFilterInternal
 
 	// ** Bearer Token
 	// => HTTP통신에서 사용하는 인증 방식에 Bearer Authentication을 사용하는 것이다.

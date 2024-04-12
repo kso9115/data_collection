@@ -1,12 +1,21 @@
 package com.example.demo.entity;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import org.springframework.web.multipart.MultipartFile;
+
+import com.example.demo.domain.MemberRole;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -64,20 +73,41 @@ public class Member {
 
 	@Transient // SQL 구문 처리 시 제외시켜준다.
 	private MultipartFile uploadfilef; // 파일에 대한 정보가 들어있는 타입 생성
+
+	/*
+	 * @Temporal(TemporalType.TIMESTAMP) // => 날짜 타입의 변수에 선언하여 날짜타입을 매핑 //
+	 * TemporalType.DATE : 날짜 정보만 출력 // TemporalType.TIME : 시간정보만 출력 //
+	 * TemporalType.TIMESTEMP : 날짜 시간 모두 private Date myDate = new Date();
+	 * 
+	 * 
+	 * @Enumerated(EnumType.STRING) => 열거타입에 대한 매핑은 @Enumerated 를 사용한다. =>
+	 * EnumType.~~ : 열거형을 DB로 저장할 때 어떤 값으로 저장할지 결정하는속성 - EnumType.STRING : 문자열로 저장
+	 * "val1, val2, val3" - EnumType.ORDINAL: 인덱스가 저장 0 ~ 4
+	 */
+
+	@ElementCollection(fetch = FetchType.LAZY)
+	@Builder.Default
+	private List<MemberRole> roleList = new ArrayList<>();
+	// => JPA는 member_role_list 라는 이름의 Child Table 을 찾음
+	//	- JPA 의 DB 표기법 : Entity명_카멜표기의 대문자는_로  
+	//	- 없으면 최초실행시 자동 생성시켜줌 (단, application.properties 설정에서 허용시)
+	//	- 부모 엔티티인 member 와 Foreign 관계 설정됨. 
+	//	- DemoJpaApplicationTests.java Test 코드 참고
+	public void addRole(MemberRole memberRole){
+		roleList.add(memberRole);
+	}
+
+	public void clearRole(){
+		roleList.clear();
+	}
 	
-	   /*
-	   @Temporal(TemporalType.TIMESTAMP)
-	   // => 날짜 타입의 변수에 선언하여 날짜타입을 매핑
-	   //       TemporalType.DATE : 날짜 정보만 출력
-	   //       TemporalType.TIME : 시간정보만 출력
-	   //       TemporalType.TIMESTEMP : 날짜 시간 모두
-	   private Date myDate = new Date();
-	   
-	   
-	   @Enumerated(EnumType.STRING) 
-	   => 열거타입에 대한 매핑은 @Enumerated 를 사용한다.  
-	   => EnumType.~~ : 열거형을 DB로 저장할 때 어떤 값으로 저장할지 결정하는속성
-	      - EnumType.STRING : 문자열로 저장 "val1, val2, val3" 
-	       - EnumType.ORDINAL: 인덱스가 저장 0 ~ 4
-	   */
+	// => JWT token 발행시 사용됨
+	public Map<String, Object> claimList() {
+	    Map<String, Object> dataMap = new HashMap<>();
+	    dataMap.put("userId", this.id);
+	    //dataMap.put("pw",this.password);
+	    dataMap.put("roleList", this.roleList);
+
+	    return dataMap;
+	}
 }
