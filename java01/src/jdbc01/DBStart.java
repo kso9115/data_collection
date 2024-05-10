@@ -173,7 +173,7 @@ public class DBStart {
 		// Connection 확인
 		// cn.toString() 메서드에서 toString() 생략한 상태
 		// 즉, 출력문에서 인스턴스명을 사용하면 toString 메서드를 호출한다
-		System.out.println("** Connection 확인 => "+ cn);		
+		
 		
 		// 1) Student List 
 //		selectList();
@@ -181,8 +181,10 @@ public class DBStart {
 		// 2) 조별 List 출력
 //		joList(3);
 		
-		// 3) 조별 List 출력 2
+		// 3) 조별 List 출력 : 1조만 출력하기
+		joListPS(1);
 		joListPS(2);
+		
 		
 		// 4) 데이터 입력
 		
